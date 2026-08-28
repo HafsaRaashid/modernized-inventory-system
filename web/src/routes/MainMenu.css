@@ -1,0 +1,32 @@
+/*
+ * SCR-002 (Main Menu, BL-002 T2). No project-specific token group applies
+ * to this screen (design-tokens.json has none for SCR-002) — layout is
+ * plain grid structure, not a themed accent.
+ */
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.main-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.main-menu__button {
+  padding: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.main-menu__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.main-menu__button--wide {
+  width: 100%;
+}
