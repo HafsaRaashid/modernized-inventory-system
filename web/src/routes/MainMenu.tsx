@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getSession } from "../api/auth";
 import "./MainMenu.css";
 
 /**
@@ -9,11 +11,30 @@ import "./MainMenu.css";
  * ARAMALAR, ODA DEMİRBAŞ İŞLEMLERİ, ODA TANIMLAMA, and Rapor Çıktısı Al
  * navigate to their respective routes (FR-3); none of those destination
  * screens exist yet, so they currently fall through to NotFound. ADMİN
- * renders in its legacy default-disabled state (FR-4) — the gate logic
- * that conditionally enables it is BL-003's scope, not this item's.
+ * starts disabled and only becomes enabled once a fresh server-side
+ * authorization check (GET /auth/me) resolves with isAdmin true, matching
+ * legacy ANA_MENU_Load's re-evaluation on every load (BL-003 FR-3). A
+ * rejected check leaves it at its safe disabled default.
  */
 export function MainMenu() {
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getSession()
+      .then((session) => {
+        if (!cancelled) {
+          setIsAdmin(session.isAdmin);
+        }
+      })
+      .catch(() => {
+        // Safe default (disabled) is already in place; no error UI needed.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="main-menu">
@@ -39,7 +60,11 @@ export function MainMenu() {
         >
           ODA TANIMLAMA
         </button>
-        <button type="button" className="main-menu__button" disabled>
+        <button
+          type="button"
+          className="main-menu__button"
+          disabled={!isAdmin}
+        >
           ADMİN
         </button>
       </div>
