@@ -1,0 +1,36 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  InventoryTrackingSystem.Domain -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Domain\bin\Debug\net8.0\InventoryTrackingSystem.Domain.dll
+  InventoryTrackingSystem.Infrastructure -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Infrastructure\bin\Debug\net8.0\InventoryTrackingSystem.Infrastructure.dll
+  InventoryTrackingSystem.Api -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Api\bin\Debug\net8.0\InventoryTrackingSystem.Api.dll
+  InventoryTrackingSystem.Api.Tests -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\tests\InventoryTrackingSystem.Api.Tests\bin\Debug\net8.0\InventoryTrackingSystem.Api.Tests.dll
+Test run for C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\tests\InventoryTrackingSystem.Api.Tests\bin\Debug\net8.0\InventoryTrackingSystem.Api.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    10, Skipped:     0, Total:    10, Duration: 1 s - InventoryTrackingSystem.Api.Tests.dll (net8.0)
+
+> inventory-tracking-system-web@0.0.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/MohamedRaashidBISTEC/OneDrive - BISTEC Global/Documents/specclaw project/modernized-inventory-system/web[39m
+
+[90mstderr[2m | tests/App.test.tsx[2m > [22m[2mApp shell[2m > [22m[2mrenders without crashing and shows Login when unauthenticated
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m tests/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[90m 64[2mms[22m[39m
+[90mstderr[2m | tests/Login.test.tsx[2m > [22m[2mLogin[2m > [22m[2mAC-2: shows the failure message and resets both fields when login is rejected
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m tests/Login.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[90m 241[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 15:56:44
+[2m   Duration [22m 1.95s[2m (transform 186ms, setup 256ms, collect 519ms, tests 305ms, environment 1.47s, prepare 388ms)[22m
+
