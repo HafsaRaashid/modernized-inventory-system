@@ -1,5 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using InventoryTrackingSystem.Infrastructure.Auth;
 using InventoryTrackingSystem.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,6 +51,31 @@ public class AuthController : ControllerBase
         {
             token,
             username = user.Username,
+        });
+    }
+
+    /// <summary>
+    /// Resolves the calling user from the JWT's `sub` claim (BL-003, FR-2)
+    /// and reports whether they are an admin. `YetkiID` is a two-value `bit`
+    /// column, so anything other than an explicit `true` — including
+    /// `null` — fails closed to <c>isAdmin: false</c> (AC-5).
+    /// </summary>
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> Me()
+    {
+        var username = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var user = await _db.Users.SingleOrDefaultAsync(u => u.Username == username);
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(new
+        {
+            username = user.Username,
+            isAdmin = user.YetkiID == true,
         });
     }
 }
