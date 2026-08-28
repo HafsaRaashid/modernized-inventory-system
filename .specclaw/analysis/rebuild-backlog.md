@@ -217,7 +217,8 @@ _Depends on: none. Module dependency rank 0. 4 active item(s)._
 **Verification:** VERIFIABLE — fixtures: GM-013 (66e5eb5), GM-014 (66e5eb5), GM-020 (66e5eb5), GM-022 (66e5eb5), GM-038 (66e5eb5), GM-041 (66e5eb5), GM-043 (66e5eb5), GM-044 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
-**Status notes (human-added):** BUILT: change `user-login`, merged to `master` at commit `3ddd3a9` (branch `specclaw/user-login`), 2026-08-28. All 19 tasks complete, verify PASS on all 7 acceptance criteria (`.specclaw/changes/user-login/verify-report.md`), 10 backend + 8 frontend tests passing. Login screen, AuthController, PasswordHasherService (PBKDF2) and JwtTokenService are real and in place; still open: CQ-027 (unanswered), UI screenshot sign-off (`.specclaw/ui/ui-manifest.json` absent), and the production password-migration procedure for the 9 legacy accounts (not built — no admin User CRUD exists in this rebuild's scope per CQ-012).
+**Status notes (human-added):**
+- BUILT: change `user-login`, merged to `master` at commit `3ddd3a9` (branch `specclaw/user-login`), 2026-08-28. All 19 tasks complete, verify PASS on all 7 acceptance criteria (`.specclaw/changes/user-login/verify-report.md`), 10 backend + 8 frontend tests passing. Login screen, AuthController, PasswordHasherService (PBKDF2) and JwtTokenService are real and in place; still open: CQ-027 (unanswered), UI screenshot sign-off (`.specclaw/ui/ui-manifest.json` absent), and the production password-migration procedure for the 9 legacy accounts (not built — no admin User CRUD exists in this rebuild's scope per CQ-012).
 
 ---
 
