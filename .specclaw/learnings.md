@@ -50,3 +50,18 @@ T9's DI registration used AddSingleton for JwtTokenService, which resolves lazil
 When a spec/design states a service 'fails at startup' as a stated risk mitigation, the task implementing DI registration should explicitly call out that AddSingleton/AddScoped alone is lazy and doesn't achieve that on its own — add an explicit eager-resolution step to the task's notes, or make it its own acceptance criterion.
 
 ---
+
+## [L4] design_gap — specclaw-build setup created the specclaw/main-menu featu...
+
+**When:** 2026-08-28 10:43 UTC
+**Category:** design_gap
+**Priority:** medium
+**Status:** pending
+
+### Detail
+specclaw-build setup created the specclaw/main-menu feature branch from origin/master (last pushed at BL-001's completion) rather than local master, silently dropping 3 local-only commits including the change's own spec/design/tasks.md. Caught immediately because build-context reported the files missing; fixed with git merge master --ff-only before the branch had any commits of its own.
+
+### Action
+Push to origin before running /specclaw:build if git.strategy is branch-per-change and local master is ahead of origin — or verify the new branch's log includes the change's own plan commit before starting wave 1.
+
+---
