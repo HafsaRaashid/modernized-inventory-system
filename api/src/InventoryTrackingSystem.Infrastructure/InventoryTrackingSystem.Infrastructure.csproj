@@ -13,6 +13,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!-- JWT issuance (JwtTokenService) — explicit reference rather than relying
+         on the transitive copy pulled in by Microsoft.Data.SqlClient's
+         Azure.Identity chain (design.md Key Decisions). Pinned to 6.35.0 to
+         match the Microsoft.IdentityModel.* version already resolved via that
+         transitive graph. -->
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
 
   <ItemGroup>
