@@ -1,4 +1,5 @@
 using InventoryTrackingSystem.Api.Middleware;
+using InventoryTrackingSystem.Infrastructure.Auth;
 using InventoryTrackingSystem.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,13 +20,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 // --- Auth boundary -------------------------------------------------------
-// SQ-004 decided real authentication/authorization is required, but no
-// scheme is registered here and no request is gated on one. That wiring,
-// the login flow, and the session/token mechanism itself belong to a
-// future backlog item — this composition root is deliberately left with a
-// marked seam for it and nothing more.
+// SQ-004's credential hashing and token issuance (BL-001). Both services
+// are stateless (JwtTokenService reads IConfiguration once at construction,
+// PasswordHasherService holds no state at all) so they're safe as
+// singletons. No authentication scheme/middleware is registered here — no
+// request is gated on the issued token yet; that enforcement is a future
+// backlog item.
+
+builder.Services.AddSingleton<PasswordHasherService>();
+builder.Services.AddSingleton<JwtTokenService>();
 
 var app = builder.Build();
+
+// Force JwtTokenService's construction now rather than on first login: its
+// constructor validates Jwt:SigningKey and throws if it's missing/too short.
+// AddSingleton alone resolves lazily, which would defer that failure to the
+// first request — this line is what actually makes it fail at startup
+// (design.md's "fail loud and early" mitigation for an unset signing key).
+app.Services.GetRequiredService<JwtTokenService>();
 
 // (error-handling pillar) Every unhandled exception is caught, logged, and
 // reshaped into a stable envelope here — no business rule is decided in

@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
+
 /**
  * The application shell (frontend-shell pillar): the root layout every
  * screen-bearing backlog item will eventually render inside. It owns no
@@ -5,13 +8,24 @@
  * and the global theme applied in styles/theme.css.
  */
 export function AppShell() {
+  const { username, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleSignOut() {
+    logout();
+    navigate("/login");
+  }
+
   return (
     <div className="app-shell">
       <header className="app-shell__header">
         <h1>Inventory Tracking System</h1>
       </header>
       <main className="app-shell__content">
-        <p>Foundation scaffold — no screen-bearing capability has been built yet.</p>
+        <p>Signed in as {username}</p>
+        <button type="button" onClick={handleSignOut}>
+          Sign Out
+        </button>
       </main>
     </div>
   );

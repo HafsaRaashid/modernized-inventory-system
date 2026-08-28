@@ -1,7 +1,21 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "./auth/AuthContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { AppShell } from "./routes/AppShell";
+import { Login } from "./routes/Login";
 import { NotFound } from "./routes/NotFound";
+
+/**
+ * Renders the app shell when authenticated, otherwise redirects to /login
+ * (BL-001 FR-7 / AC-7).
+ */
+function RequireAuth() {
+  const { token } = useAuth();
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return <AppShell />;
+}
 
 /**
  * The routing shell only (frontend-routing pillar). No capability route
@@ -12,7 +26,8 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Routes>
-        <Route path="/" element={<AppShell />} />
+        <Route path="/" element={<RequireAuth />} />
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>

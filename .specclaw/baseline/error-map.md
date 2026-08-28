@@ -18,9 +18,14 @@ raises the condition it names.
 - **Condition:** the supplied username+password does not match any `tblKullanicilar` row
   (the `SELECT COUNT(*) ...` query returns 0).
 - **Legacy source:** frmGiris.cs:43-53
-- **Rebuild source:** not yet mapped
+- **Rebuild source:** `api/src/InventoryTrackingSystem.Api/Controllers/AuthController.cs:38-42`
+  (`AuthController.Login`'s `Unauthorized` branch — reached both for an unmatched/wrong
+  credential and for an empty username or password, since no separate non-empty gate
+  runs before the lookup; see BL-001's spec.md FR-5/AC-3).
 - **Raised as (legacy):** no exception -- an in-band `if`/`else` branch;
   `MessageBox.Show("Hatalı giriş yaptınız.Lütfen tekrar giriniz!!!")` at frmGiris.cs:53.
+- **Raised as (rebuild):** no exception -- `401 Unauthorized` with
+  `{ "error": "INVALID_LOGIN_CREDENTIALS", "message": "Hatalı giriş yaptınız. Lütfen tekrar giriniz!!!" }`.
 - **Pinned by:** GM-012, GM-013
 
 ### ROOM_NAME_REQUIRED

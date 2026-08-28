@@ -1,3 +1,5 @@
+import { AUTH_TOKEN_STORAGE_KEY } from "../auth/AuthContext";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 export class ApiError extends Error {
@@ -21,11 +23,12 @@ export interface RequestOptions extends Omit<RequestInit, "body"> {
  * - base-URL resolution (VITE_API_BASE_URL, see .env.example)
  * - JSON request/response shaping
  * - a stable error type (ApiError) callers can catch by type
- * - a slot for an Authorization header, currently a no-op
+ * - a slot for an Authorization header, sourced from AuthContext's
+ *   sessionStorage-backed token (BL-001)
  *
- * Auth boundary (SQ-004): no token exists yet. A future backlog item is
- * what will start populating getAuthHeader() with a real token — nothing
- * in this file authenticates anyone today.
+ * Auth boundary (SQ-004): getAuthHeader() reads the token AuthContext
+ * persisted to sessionStorage under AUTH_TOKEN_STORAGE_KEY, since this
+ * module has no React context access.
  */
 export async function apiFetch<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { body, headers, ...rest } = options;
@@ -58,5 +61,6 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
 }
 
 function getAuthHeader(): Record<string, string> {
-  return {};
+  const token = sessionStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
