@@ -39,9 +39,12 @@ builder.Services.AddSingleton<JwtTokenService>();
 // default handler rewrite it to ClaimTypes.NameIdentifier. No audience is
 // issued, so ValidateAudience stays off; ValidateIssuer only turns on when
 // an issuer is actually configured.
-var jwtSigningKey = builder.Configuration["Jwt:SigningKey"] ?? string.Empty;
-var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-
+//
+// Config is read lazily (inside the options delegate, off the captured
+// `builder.Configuration` ConfigurationManager reference) rather than into a
+// local variable here — `builder.Configuration` still mutates in place for
+// any source layered on after this line but before the app is built (e.g. a
+// WebApplicationFactory test override), and only a lazy read sees that.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -49,9 +52,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSigningKey)),
-            ValidateIssuer = !string.IsNullOrEmpty(jwtIssuer),
-            ValidIssuer = jwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"] ?? string.Empty)),
+            ValidateIssuer = !string.IsNullOrEmpty(builder.Configuration["Jwt:Issuer"]),
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidateAudience = false,
             NameClaimType = JwtRegisteredClaimNames.Sub,
         };
