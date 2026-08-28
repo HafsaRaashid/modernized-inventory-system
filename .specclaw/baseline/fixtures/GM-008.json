@@ -1,0 +1,44 @@
+{
+  "scenario_id": "GM-008",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "seam": "frmStokGuncelleme.HarfGirisiKontrol",
+    "characters": [
+      "A",
+      ",",
+      "\b",
+      "9"
+    ]
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "results": [
+      {
+        "char": "A",
+        "handled": false,
+        "message_box_shown": false
+      },
+      {
+        "char": ",",
+        "handled": false,
+        "message_box_shown": false
+      },
+      {
+        "char": "\\b",
+        "handled": false,
+        "message_box_shown": false
+      },
+      {
+        "char": "9",
+        "handled": true,
+        "message_box_shown": true
+      }
+    ]
+  }
+}

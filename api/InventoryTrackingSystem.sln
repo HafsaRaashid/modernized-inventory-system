@@ -1,0 +1,50 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0FD1904E-F766-4C00-AA23-E739C46CFA65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{89961FCE-D70F-4022-A23E-17A09FA5B3C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryTrackingSystem.Api", "src\InventoryTrackingSystem.Api\InventoryTrackingSystem.Api.csproj", "{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryTrackingSystem.Domain", "src\InventoryTrackingSystem.Domain\InventoryTrackingSystem.Domain.csproj", "{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryTrackingSystem.Infrastructure", "src\InventoryTrackingSystem.Infrastructure\InventoryTrackingSystem.Infrastructure.csproj", "{2BC174F8-6476-4465-B9C2-5D80D87BAF66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryTrackingSystem.Api.Tests", "tests\InventoryTrackingSystem.Api.Tests\InventoryTrackingSystem.Api.Tests.csproj", "{896CAC61-FB50-4D53-910A-BE3783F0441B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC174F8-6476-4465-B9C2-5D80D87BAF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC174F8-6476-4465-B9C2-5D80D87BAF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC174F8-6476-4465-B9C2-5D80D87BAF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC174F8-6476-4465-B9C2-5D80D87BAF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{896CAC61-FB50-4D53-910A-BE3783F0441B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896CAC61-FB50-4D53-910A-BE3783F0441B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{896CAC61-FB50-4D53-910A-BE3783F0441B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896CAC61-FB50-4D53-910A-BE3783F0441B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4BABFE65-A1ED-4642-8AB1-8AD67DFDFEB8} = {0FD1904E-F766-4C00-AA23-E739C46CFA65}
+		{1C09C45D-B46B-4BBD-B1A6-379379A1DA6A} = {0FD1904E-F766-4C00-AA23-E739C46CFA65}
+		{2BC174F8-6476-4465-B9C2-5D80D87BAF66} = {0FD1904E-F766-4C00-AA23-E739C46CFA65}
+		{896CAC61-FB50-4D53-910A-BE3783F0441B} = {89961FCE-D70F-4022-A23E-17A09FA5B3C7}
+	EndGlobalSection
+EndGlobal

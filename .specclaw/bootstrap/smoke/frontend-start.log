@@ -1,0 +1,23 @@
+
+> inventory-tracking-system-web@0.0.0 build
+> tsc -b && vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 37 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.41 kB[22m[1m[22m[2m │ gzip:  0.27 kB[22m
+[2mdist/[22m[35massets/index-DGeqBUNp.css  [39m[1m[2m  0.13 kB[22m[1m[22m[2m │ gzip:  0.13 kB[22m
+[2mdist/[22m[36massets/index-Dy8ADUis.js   [39m[1m[2m159.67 kB[22m[1m[22m[2m │ gzip: 52.01 kB[22m
+[32m✓ built in 996ms[39m
+
+> inventory-tracking-system-web@0.0.0 preview
+> vite preview --port 4173
+
+Port 4173 is in use, trying another one...
+Port 4174 is in use, trying another one...
+Port 4175 is in use, trying another one...
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4176[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+OK

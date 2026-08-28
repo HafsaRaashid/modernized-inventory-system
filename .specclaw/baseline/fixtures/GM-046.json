@@ -1,0 +1,20 @@
+{
+  "scenario_id": "GM-046",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_adi": "O'Brien's Office 398f8cbc"
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": true,
+    "error_code": "ROOM_NAME_CONTAINS_QUOTE",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "InnerExceptionType": null,
+    "ExceptionMessage": "Incorrect syntax near 'Brien'.",
+    "InnerExceptionMessage": null
+  }
+}

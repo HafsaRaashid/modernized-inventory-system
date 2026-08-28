@@ -1,0 +1,19 @@
+{
+  "scenario_id": "GM-037",
+  "captured_at": "2026-08-28T05:24:39Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "demirbas_id": 1019,
+    "stok": 4,
+    "alinan_adet": 4
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "adet_after": 0
+  }
+}

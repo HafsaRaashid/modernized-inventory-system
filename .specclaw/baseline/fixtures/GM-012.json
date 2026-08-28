@@ -1,0 +1,19 @@
+{
+  "scenario_id": "GM-012",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "username": "wronguser_48bdce23",
+    "password": "wrongpass_48bdce23"
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": false,
+    "error_code": "INVALID_LOGIN_CREDENTIALS",
+    "username_field_reset": "KULLANICI ADI",
+    "password_field_reset": "ŞİFRE"
+  }
+}

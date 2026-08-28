@@ -1,0 +1,421 @@
+{
+  "bootstrap_schema": 1,
+  "plugin_version": "0.14.3",
+  "generated": "2026-08-28",
+  "generated_at": "2026-08-28T09:22:42Z",
+  "project_root": "C:/Users/MohamedRaashidBISTEC/OneDrive - BISTEC Global/Documents/specclaw project/modernized-inventory-system",
+  "not_applicable": null,
+  "foundation_ready": true,
+  "stack": {
+    "frontend": "React 18 + TypeScript SPA (Vite)",
+    "backend": "ASP.NET Core Web API (C#, .NET 8)",
+    "orm": "Entity Framework Core 8",
+    "database": "SQL Server",
+    "frontend_test_runner": "Vitest + React Testing Library",
+    "backend_test_runner": "xUnit"
+  },
+  "decisions_consumed": [
+    {
+      "id": "SQ-001",
+      "decision": "Web application",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-002",
+      "decision": "Keep the legacy database engine as-is (SQL Server).",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-003",
+      "decision": "Self-hosted / on-prem, single-tenant — runs locally, no cloud hosting needed.",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-004",
+      "decision": "Add real authentication/authorization, sized to the target platform (hashed/salted credentials, proper session/token handling — replacing the legacy plaintext/SQL-injectable login and YetkiID flag model).",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-006",
+      "decision": "Settled by SQ-014: React (with TypeScript) as the SPA frontend framework.",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-013",
+      "decision": "FAITHFUL — reproduce the legacy layout structure and colour theme exactly, within the target web platform's own rendering norms.",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-014",
+      "decision": "ASP.NET Core Web API (C#) + Entity Framework Core against SQL Server, with a React + TypeScript SPA frontend.",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-010",
+      "decision": "Small scale, no special performance work needed. 6 rooms, 5 assets, 9 users, 9 personnel, 18 departments, 4 asset types.",
+      "source": ".specclaw/analysis/decisions.md"
+    },
+    {
+      "id": "SQ-011",
+      "decision": "Defer operational tooling (backups/logging/monitoring/CI-CD) to a later phase.",
+      "source": ".specclaw/analysis/decisions.md"
+    }
+  ],
+  "pillars": [
+    {
+      "id": "frontend-shell",
+      "status": "present",
+      "evidence": "web/src/main.tsx:9"
+    },
+    {
+      "id": "frontend-routing",
+      "status": "present",
+      "evidence": "web/src/App.tsx:14"
+    },
+    {
+      "id": "api-client",
+      "status": "present",
+      "evidence": "web/src/api/client.ts:30"
+    },
+    {
+      "id": "backend-solution",
+      "status": "present",
+      "evidence": "api/InventoryTrackingSystem.sln:1"
+    },
+    {
+      "id": "di",
+      "status": "present",
+      "evidence": "api/src/InventoryTrackingSystem.Api/Program.cs:12"
+    },
+    {
+      "id": "config",
+      "status": "present",
+      "evidence": "api/src/InventoryTrackingSystem.Api/appsettings.json:9"
+    },
+    {
+      "id": "cors",
+      "status": "absent-by-decision",
+      "reason": "SQ-003 decided a self-hosted, on-prem, single-tenant deployment. The Vite dev server proxies /api/* to the backend (web/vite.config.ts) and the production build is served by the API itself, so the SPA and API are same-origin in both environments — no cross-origin caller exists for this foundation to support."
+    },
+    {
+      "id": "error-handling",
+      "status": "present",
+      "evidence": "api/src/InventoryTrackingSystem.Api/Middleware/ExceptionHandlingMiddleware.cs:33"
+    },
+    {
+      "id": "persistence",
+      "status": "present",
+      "evidence": "api/src/InventoryTrackingSystem.Infrastructure/Persistence/AppDbContext.cs:16"
+    },
+    {
+      "id": "migrations",
+      "status": "present",
+      "evidence": "api/.config/dotnet-tools.json:6"
+    },
+    {
+      "id": "health-check",
+      "status": "present",
+      "evidence": "api/src/InventoryTrackingSystem.Api/Controllers/HealthController.cs:14"
+    },
+    {
+      "id": "test-frontend",
+      "status": "present",
+      "evidence": "web/tests/App.test.tsx:12"
+    },
+    {
+      "id": "test-backend",
+      "status": "present",
+      "evidence": "api/tests/InventoryTrackingSystem.Api.Tests/HealthControllerTests.cs:15"
+    },
+    {
+      "id": "theme-plumbing",
+      "status": "present",
+      "evidence": "web/src/styles/theme.css:12"
+    }
+  ],
+  "files_created": [
+    {
+      "path": "api/InventoryTrackingSystem.sln",
+      "purpose": "build"
+    },
+    {
+      "path": "api/.config/dotnet-tools.json",
+      "purpose": "build"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Domain/InventoryTrackingSystem.Domain.csproj",
+      "purpose": "build"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Infrastructure/InventoryTrackingSystem.Infrastructure.csproj",
+      "purpose": "build"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Infrastructure/Persistence/AppDbContext.cs",
+      "purpose": "persistence"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/InventoryTrackingSystem.Api.csproj",
+      "purpose": "build"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/Program.cs",
+      "purpose": "di"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/Controllers/HealthController.cs",
+      "purpose": "health"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/Middleware/ExceptionHandlingMiddleware.cs",
+      "purpose": "error-handling"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/appsettings.json",
+      "purpose": "config"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/appsettings.Development.json",
+      "purpose": "config"
+    },
+    {
+      "path": "api/src/InventoryTrackingSystem.Api/Properties/launchSettings.json",
+      "purpose": "config"
+    },
+    {
+      "path": "api/tests/InventoryTrackingSystem.Api.Tests/InventoryTrackingSystem.Api.Tests.csproj",
+      "purpose": "test-harness"
+    },
+    {
+      "path": "api/tests/InventoryTrackingSystem.Api.Tests/HealthControllerTests.cs",
+      "purpose": "test-harness"
+    },
+    {
+      "path": "web/package.json",
+      "purpose": "build"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "purpose": "build"
+    },
+    {
+      "path": "web/tsconfig.node.json",
+      "purpose": "build"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "purpose": "build"
+    },
+    {
+      "path": "web/index.html",
+      "purpose": "shell"
+    },
+    {
+      "path": "web/.env.example",
+      "purpose": "config"
+    },
+    {
+      "path": "web/src/main.tsx",
+      "purpose": "shell"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "purpose": "routing"
+    },
+    {
+      "path": "web/src/routes/AppShell.tsx",
+      "purpose": "shell"
+    },
+    {
+      "path": "web/src/routes/NotFound.tsx",
+      "purpose": "routing"
+    },
+    {
+      "path": "web/src/components/ErrorBoundary.tsx",
+      "purpose": "error-handling"
+    },
+    {
+      "path": "web/src/api/client.ts",
+      "purpose": "api-client"
+    },
+    {
+      "path": "web/src/api/health.ts",
+      "purpose": "api-client"
+    },
+    {
+      "path": "web/src/styles/theme.css",
+      "purpose": "theme"
+    },
+    {
+      "path": "web/src/vite-env.d.ts",
+      "purpose": "build"
+    },
+    {
+      "path": "web/tests/setupTests.ts",
+      "purpose": "test-harness"
+    },
+    {
+      "path": "web/tests/App.test.tsx",
+      "purpose": "test-harness"
+    },
+    {
+      "path": ".gitignore",
+      "purpose": "config"
+    }
+  ],
+  "route_census": [
+    {
+      "route": "GET /api/health",
+      "kind": "health",
+      "file": "api/src/InventoryTrackingSystem.Api/Controllers/HealthController.cs:14"
+    },
+    {
+      "route": "/",
+      "kind": "shell",
+      "file": "web/src/App.tsx:15"
+    },
+    {
+      "route": "*",
+      "kind": "error",
+      "file": "web/src/App.tsx:16"
+    }
+  ],
+  "screen_census": [
+    {
+      "screen": "AppShell",
+      "kind": "shell",
+      "file": "web/src/routes/AppShell.tsx:7"
+    },
+    {
+      "screen": "NotFound",
+      "kind": "error",
+      "file": "web/src/routes/NotFound.tsx:5"
+    }
+  ],
+  "ui_tokens_imported": [],
+  "ui_tokens_skipped_reason": "SQ-013 is decided FAITHFUL and .specclaw/ui/design-tokens.json is present, but its only token group (TK-001, 'Login screen accent') is scoped to SCR-001, not `global` — design-tokens.json contains no global-scoped token group at all. Per the foundation-only token-plumbing line, a SCR-###-scoped group is never imported here (that is a per-screen human sign-off in ui-review.md, owned by BL-001). The theme mechanism (web/src/styles/theme.css, registered from web/src/main.tsx) was built with zero token values imported.",
+  "plan": ".specclaw/bootstrap/bootstrap-plan.md",
+  "gate": {
+    "result": "PASS",
+    "checks_run": 7,
+    "checks": [
+      {
+        "check": "pillar-vocabulary",
+        "result": "PASS",
+        "detail": "every declared pillar id is in the closed set"
+      },
+      {
+        "check": "no-capability-files",
+        "result": "PASS",
+        "detail": "no file declares a capability purpose"
+      },
+      {
+        "check": "route-census",
+        "result": "PASS",
+        "detail": "1 health route(s), every other route shell/error/layout"
+      },
+      {
+        "check": "screen-census",
+        "result": "PASS",
+        "detail": "every declared screen is shell/error/layout"
+      },
+      {
+        "check": "no-rule-or-item-citations",
+        "result": "PASS",
+        "detail": "no DR-###/BL-###/SCR-### id appears in any created file (necessary, not sufficient — see CONTRACT.md (n.4))"
+      },
+      {
+        "check": "declared-tokens-only",
+        "result": "PASS",
+        "detail": "only declared token group(s) appear: none"
+      },
+      {
+        "check": "smoke-vocabulary",
+        "result": "PASS",
+        "detail": "every declared smoke check id is in the closed set"
+      }
+    ],
+    "problems": [],
+    "limits": "Declared-census check plus DR/BL/SCR/TK id greps over the files the census names. It cannot prove the absence of capability logic — a rule implemented without citing its DR id passes. See templates/CONTRACT.md (n.4)."
+  },
+  "smoke": [
+    {
+      "check": "api-build",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/api-build.log",
+      "required": true,
+      "command": "cd api && dotnet build InventoryTrackingSystem.sln"
+    },
+    {
+      "check": "api-start",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/api-start.log",
+      "required": true,
+      "command": "cd api && dotnet run --project src/InventoryTrackingSystem.Api --urls http://localhost:5080 & sleep 6; curl -sf http://localhost:5080/api/health; taskkill //IM InventoryTrackingSystem.Api.exe //F > /dev/null 2>&1 || true"
+    },
+    {
+      "check": "test-backend",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/test-backend.log",
+      "required": true,
+      "command": "cd api && dotnet test tests/InventoryTrackingSystem.Api.Tests"
+    },
+    {
+      "check": "db-connect",
+      "result": "SKIPPED",
+      "detail": "Requires a reachable SQL Server instance and a developer-supplied connection string (dotnet user-secrets or ConnectionStrings__Default) per bootstrap-plan.md 'Local Development Setup' — not runnable unattended without one, and none was provisioned in this run.",
+      "log": ".specclaw/bootstrap/smoke/db-connect.log",
+      "required": false,
+      "command": null
+    },
+    {
+      "check": "migrations-infra",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/migrations-infra.log",
+      "required": true,
+      "command": "cd api && dotnet ef migrations add _BootstrapSmokeProbe --project src/InventoryTrackingSystem.Infrastructure --startup-project src/InventoryTrackingSystem.Api -o Migrations && rm -rf src/InventoryTrackingSystem.Infrastructure/Migrations"
+    },
+    {
+      "check": "frontend-build",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/frontend-build.log",
+      "required": true,
+      "command": "cd web && npm install && npm run build"
+    },
+    {
+      "check": "frontend-start",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/frontend-start.log",
+      "required": true,
+      "command": "cd web && npm run build && (npm run preview -- --port 4173 & PID=$!; sleep 3; curl -sf http://localhost:4173/ > /dev/null && echo OK; kill $PID)"
+    },
+    {
+      "check": "test-frontend",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/test-frontend.log",
+      "required": true,
+      "command": "cd web && npm run test"
+    },
+    {
+      "check": "frontend-to-api",
+      "result": "SKIPPED",
+      "detail": "Requires both api-start and `npm run dev` to already be running concurrently (the Vite dev-server proxy is what bridges them) — this is a combined check for specclaw-bf-bootstrap smoke to sequence, not a single self-contained command.",
+      "log": ".specclaw/bootstrap/smoke/frontend-to-api.log",
+      "required": false,
+      "command": null
+    }
+  ],
+  "smoke_summary": {
+    "total": 9,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 2
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "scenario_id": "GM-038",
+  "captured_at": "2026-08-28T05:24:39Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_id": 1029,
+    "demirbas_id": 1020,
+    "personel_id": 1523,
+    "adet_talep": ""
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": false,
+    "error_code": "QUANTITY_REQUIRED",
+    "error_provider_text": "Boş geçilmez"
+  }
+}

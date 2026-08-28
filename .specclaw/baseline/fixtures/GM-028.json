@@ -1,0 +1,17 @@
+{
+  "scenario_id": "GM-028",
+  "captured_at": "2026-08-28T05:24:41Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_adi": "Shared Name 096e2970"
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "rows_affected": 2
+  }
+}

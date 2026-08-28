@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Domain layer boundary (backend-solution pillar). Deliberately empty: no
+    domain entity has been built by any backlog item yet. This project
+    exists so a later backlog item has a place to add one without first
+    having to invent the project layout itself.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

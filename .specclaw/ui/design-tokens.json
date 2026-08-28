@@ -1,0 +1,43 @@
+{
+  "generated": "2026-08-18",
+  "view_technology": "Windows Forms (WinForms), .NET Framework 4.5 — declarative-via-code view definitions in frm*.Designer.cs partial classes (InitializeComponent() imperatively building System.Windows.Forms control trees in C#), no XAML/markup anywhere in scope. Confirmed by direct Read of all 12 frm*.Designer.cs/frm*.cs pairs under YazılımSınamaProjesi/. No custom theme/resource-dictionary file exists anywhere in this codebase; the only styling present is (a) three SystemColors references on the Login screen and (b) three embedded PNG icon resources surfaced via Properties/Resources.Designer.cs. Every other screen renders with entirely unthemed WinForms defaults.",
+  "legacy_commit_sha": "66e5eb5",
+  "token_groups": [
+    {
+      "id": "TK-001",
+      "name": "Login screen accent",
+      "scope": "SCR-001",
+      "status": "GROUNDED",
+      "provisional_ref": null,
+      "colors": [
+        {
+          "name": "login-button-background",
+          "value": "SystemColors.Highlight",
+          "source": "YazılımSınamaProjesi/frmGiris.Designer.cs:45",
+          "note": "OS-theme-relative symbolic color; the actual rendered RGB depends on the end user's Windows theme and is not evidenced in source as a fixed hex value (see ui-inventory.md Named Gap 6)."
+        },
+        {
+          "name": "login-button-foreground",
+          "value": "SystemColors.ControlText",
+          "source": "YazılımSınamaProjesi/frmGiris.Designer.cs:46",
+          "note": "OS-theme-relative symbolic color; see login-button-background note."
+        },
+        {
+          "name": "login-form-background",
+          "value": "SystemColors.Control",
+          "source": "YazılımSınamaProjesi/frmGiris.Designer.cs:109",
+          "note": "OS-theme-relative symbolic color; see login-button-background note."
+        }
+      ],
+      "typography": [],
+      "spacing": []
+    }
+  ],
+  "omitted": [
+    {
+      "name": "typography (font-family / size / weight, all screens)",
+      "reason": "No Font property is ever set on any of the 12 forms or their controls anywhere in YazılımSınamaProjesi/ (confirmed by direct inspection of every frm*.Designer.cs/frm*.cs pair) — typography is entirely OS/.NET-default and the effective font stack cannot be determined from source. frmDemirbasIslem.Designer.cs:190 additionally declares a different AutoScaleDimensions (6F,13F) than its 11 sibling forms (8F,16F, e.g. frmGiris.Designer.cs:107), the two values corresponding to different legacy default-font design-time metrics, which compounds the ambiguity about what actually renders at runtime.",
+      "pq_ref": "PQ-009"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "scenario_id": "GM-022",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_adi": "Room Y 5c498351",
+    "departman_id": null
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": true,
+    "error_code": "DEPARTMENT_NOT_SELECTED",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "InnerExceptionType": null,
+    "ExceptionMessage": "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_tblOda_tblDepartmanlar\". The conflict occurred in database \"DemirbasTakip\", table \"dbo.tblDepartmanlar\", column 'DepartmanID'.\r\nThe statement has been terminated.",
+    "InnerExceptionMessage": null
+  }
+}

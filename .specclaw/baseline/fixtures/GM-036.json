@@ -1,0 +1,22 @@
+{
+  "scenario_id": "GM-036",
+  "captured_at": "2026-08-28T05:24:39Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_id": 1027,
+    "demirbas_id": 1018,
+    "personel_id": 1521,
+    "stok": 10,
+    "adet_talep": 3
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "row_created": true,
+    "adet_after": 7
+  }
+}

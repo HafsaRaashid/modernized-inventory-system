@@ -1,0 +1,61 @@
+{
+  "scenario_id": "GM-043",
+  "captured_at": "2026-08-28T05:24:41Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "search_type": "AlimTarihi",
+    "date": "2026-08-28"
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "results": [
+      {
+        "DemirbasAdi": "DatedAsset_2efd3336",
+        "DemirbasTuruAdi": "Turu_2efd3336",
+        "Fiyat": 50.0000,
+        "AlimTarihi": "2026-08-28T00:00:00",
+        "Adet": 1
+      },
+      {
+        "DemirbasAdi": "laptop",
+        "DemirbasTuruAdi": "Elektronik",
+        "Fiyat": 30000000.0000,
+        "AlimTarihi": "2017-01-19T00:00:00",
+        "Adet": 100
+      },
+      {
+        "DemirbasAdi": "Masa",
+        "DemirbasTuruAdi": "Mobilya",
+        "Fiyat": 50.0000,
+        "AlimTarihi": "2017-01-18T00:00:00",
+        "Adet": 146
+      },
+      {
+        "DemirbasAdi": "Projeksiyon Cihazı",
+        "DemirbasTuruAdi": "Elektronik",
+        "Fiyat": 1200.0000,
+        "AlimTarihi": "2017-01-24T00:00:00",
+        "Adet": 8
+      },
+      {
+        "DemirbasAdi": "Sandalye",
+        "DemirbasTuruAdi": "Mobilya",
+        "Fiyat": 30.0000,
+        "AlimTarihi": "2017-01-26T00:00:00",
+        "Adet": 120
+      },
+      {
+        "DemirbasAdi": "Sınıf Tahtası",
+        "DemirbasTuruAdi": "Mobilya",
+        "Fiyat": 500.0000,
+        "AlimTarihi": "2017-01-22T00:00:00",
+        "Adet": 197
+      }
+    ]
+  }
+}

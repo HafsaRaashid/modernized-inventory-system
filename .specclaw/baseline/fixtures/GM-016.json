@@ -1,0 +1,19 @@
+{
+  "scenario_id": "GM-016",
+  "captured_at": "2026-08-28T05:24:38Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "username": "user2_e8ca2911",
+    "password": "pw2_e8ca2911",
+    "yetki_id": "False"
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "admin_button_enabled": false
+  }
+}

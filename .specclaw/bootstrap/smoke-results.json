@@ -1,0 +1,83 @@
+{
+  "timeout_seconds": 180,
+  "results": [
+    {
+      "check": "api-build",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/api-build.log",
+      "required": true,
+      "command": "cd api && dotnet build InventoryTrackingSystem.sln"
+    },
+    {
+      "check": "api-start",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/api-start.log",
+      "required": true,
+      "command": "cd api && dotnet run --project src/InventoryTrackingSystem.Api --urls http://localhost:5080 & sleep 6; curl -sf http://localhost:5080/api/health; taskkill //IM InventoryTrackingSystem.Api.exe //F > /dev/null 2>&1 || true"
+    },
+    {
+      "check": "test-backend",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/test-backend.log",
+      "required": true,
+      "command": "cd api && dotnet test tests/InventoryTrackingSystem.Api.Tests"
+    },
+    {
+      "check": "db-connect",
+      "result": "SKIPPED",
+      "detail": "Requires a reachable SQL Server instance and a developer-supplied connection string (dotnet user-secrets or ConnectionStrings__Default) per bootstrap-plan.md 'Local Development Setup' — not runnable unattended without one, and none was provisioned in this run.",
+      "log": ".specclaw/bootstrap/smoke/db-connect.log",
+      "required": false,
+      "command": null
+    },
+    {
+      "check": "migrations-infra",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/migrations-infra.log",
+      "required": true,
+      "command": "cd api && dotnet ef migrations add _BootstrapSmokeProbe --project src/InventoryTrackingSystem.Infrastructure --startup-project src/InventoryTrackingSystem.Api -o Migrations && rm -rf src/InventoryTrackingSystem.Infrastructure/Migrations"
+    },
+    {
+      "check": "frontend-build",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/frontend-build.log",
+      "required": true,
+      "command": "cd web && npm install && npm run build"
+    },
+    {
+      "check": "frontend-start",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/frontend-start.log",
+      "required": true,
+      "command": "cd web && npm run build && (npm run preview -- --port 4173 & PID=$!; sleep 3; curl -sf http://localhost:4173/ > /dev/null && echo OK; kill $PID)"
+    },
+    {
+      "check": "test-frontend",
+      "result": "PASS",
+      "detail": "",
+      "log": ".specclaw/bootstrap/smoke/test-frontend.log",
+      "required": true,
+      "command": "cd web && npm run test"
+    },
+    {
+      "check": "frontend-to-api",
+      "result": "SKIPPED",
+      "detail": "Requires both api-start and `npm run dev` to already be running concurrently (the Vite dev-server proxy is what bridges them) — this is a combined check for specclaw-bf-bootstrap smoke to sequence, not a single self-contained command.",
+      "log": ".specclaw/bootstrap/smoke/frontend-to-api.log",
+      "required": false,
+      "command": null
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 2
+  }
+}

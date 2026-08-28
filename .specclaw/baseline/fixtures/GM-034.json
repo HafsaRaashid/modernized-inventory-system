@@ -1,0 +1,22 @@
+{
+  "scenario_id": "GM-034",
+  "captured_at": "2026-08-28T05:24:38Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_id": 1025,
+    "demirbas_id": 1016,
+    "personel_id": 1519,
+    "stok": 5,
+    "adet_talep": 6
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": false,
+    "error_code": "QUANTITY_EXCEEDS_STOCK",
+    "row_created": false,
+    "adet_after": 5
+  }
+}

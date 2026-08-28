@@ -1,0 +1,43 @@
+{
+  "result": "PASS",
+  "checks_run": 7,
+  "checks": [
+    {
+      "check": "pillar-vocabulary",
+      "result": "PASS",
+      "detail": "every declared pillar id is in the closed set"
+    },
+    {
+      "check": "no-capability-files",
+      "result": "PASS",
+      "detail": "no file declares a capability purpose"
+    },
+    {
+      "check": "route-census",
+      "result": "PASS",
+      "detail": "1 health route(s), every other route shell/error/layout"
+    },
+    {
+      "check": "screen-census",
+      "result": "PASS",
+      "detail": "every declared screen is shell/error/layout"
+    },
+    {
+      "check": "no-rule-or-item-citations",
+      "result": "PASS",
+      "detail": "no DR-###/BL-###/SCR-### id appears in any created file (necessary, not sufficient — see CONTRACT.md (n.4))"
+    },
+    {
+      "check": "declared-tokens-only",
+      "result": "PASS",
+      "detail": "only declared token group(s) appear: none"
+    },
+    {
+      "check": "smoke-vocabulary",
+      "result": "PASS",
+      "detail": "every declared smoke check id is in the closed set"
+    }
+  ],
+  "problems": [],
+  "limits": "Declared-census check plus DR/BL/SCR/TK id greps over the files the census names. It cannot prove the absence of capability logic — a rule implemented without citing its DR id passes. See templates/CONTRACT.md (n.4)."
+}

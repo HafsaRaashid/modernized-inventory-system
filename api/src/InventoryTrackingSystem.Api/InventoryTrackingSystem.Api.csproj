@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Local-dev secret store (dotnet user-secrets) — see bootstrap-plan.md
+         "Local Development Setup" for how the SQL Server connection string
+         is supplied without ever being committed. -->
+    <UserSecretsId>inventorytrackingsystem-api-dev</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InventoryTrackingSystem.Infrastructure\InventoryTrackingSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- EF Core design-time tooling (dotnet-ef) requires this package on the
+         startup project itself — the Infrastructure project's reference has
+         PrivateAssets=all and does not flow transitively. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

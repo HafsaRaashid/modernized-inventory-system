@@ -1,0 +1,33 @@
+{
+  "scenario_id": "GM-010",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "seam": "frmStokEkleme.HarfGirisiKontrol",
+    "characters": [
+      "B",
+      "4"
+    ]
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "results": [
+      {
+        "char": "B",
+        "handled": false,
+        "message_box_shown": false
+      },
+      {
+        "char": "4",
+        "handled": true,
+        "message_box_shown": true
+      }
+    ],
+    "code_path_note": "txtSEdemirbasAdi has no KeyPress handler wired to this method in frmStokEkleme.cs -- reachable only via direct/reflection invocation, never through the real UI."
+  }
+}

@@ -1,0 +1,1 @@
+SKIPPED: Requires both api-start and `npm run dev` to already be running concurrently (the Vite dev-server proxy is what bridges them) — this is a combined check for specclaw-bf-bootstrap smoke to sequence, not a single self-contained command.

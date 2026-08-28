@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  InventoryTrackingSystem.Domain -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Domain\bin\Debug\net8.0\InventoryTrackingSystem.Domain.dll
+  InventoryTrackingSystem.Infrastructure -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Infrastructure\bin\Debug\net8.0\InventoryTrackingSystem.Infrastructure.dll
+  InventoryTrackingSystem.Api -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Api\bin\Debug\net8.0\InventoryTrackingSystem.Api.dll
+  InventoryTrackingSystem.Api.Tests -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\tests\InventoryTrackingSystem.Api.Tests\bin\Debug\net8.0\InventoryTrackingSystem.Api.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.65

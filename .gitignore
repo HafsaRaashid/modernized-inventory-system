@@ -1,0 +1,17 @@
+# .NET
+api/**/bin/
+api/**/obj/
+*.user
+
+# Node / Vite
+web/node_modules/
+web/dist/
+web/.vite/
+*.tsbuildinfo
+web/vite.config.d.ts
+web/vite.config.js
+
+# Environment / secrets — never commit an actual connection string or token
+.env
+.env.local
+*.local.json

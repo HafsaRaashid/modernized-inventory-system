@@ -1,0 +1,30 @@
+{
+  "scenario_id": "GM-047",
+  "captured_at": "2026-08-28T05:24:40Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_adi": "Room a6c5c1ad"
+  },
+  "output": {
+    "outcome": "OK",
+    "threw": false,
+    "error_code": null,
+    "results": [
+      {
+        "OdaID": 1033,
+        "OdaAdi": "Room a6c5c1ad",
+        "PersonelID": 1526,
+        "PersonelAdi": "Ad_a6c5c1ad",
+        "PersonelSoyadi": "Soyad_a6c5c1ad",
+        "DemirbasID": 1023,
+        "DemirbasAdi": "Asset_a6c5c1ad",
+        "Fiyat": 250.0000,
+        "AlimTarihi": "2026-08-28T00:00:00",
+        "AlinanAdet": 2
+      }
+    ]
+  }
+}

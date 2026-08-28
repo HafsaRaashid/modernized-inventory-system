@@ -1,0 +1,28 @@
+/*
+ * Theme mechanism (theme-plumbing pillar, SQ-013 = FAITHFUL). Global design
+ * tokens are declared here as CSS custom properties, in this platform's own
+ * idiom.
+ *
+ * No token VALUES are imported yet: .specclaw/ui/design-tokens.json's only
+ * token group is scoped to one specific legacy screen, not `global` — and
+ * a screen-scoped group is never imported at the foundation stage (that is
+ * a per-screen, per-change human sign-off owned by whichever backlog item
+ * rebuilds that screen). See .specclaw/bootstrap/bootstrap-plan.md "UI
+ * Token Plumbing" for the full reasoning.
+ */
+:root {
+  /* No global-scoped token values exist yet to import. */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.app-shell__header {
+  padding: 1rem;
+}
+
+.app-shell__content {
+  padding: 1rem;
+}

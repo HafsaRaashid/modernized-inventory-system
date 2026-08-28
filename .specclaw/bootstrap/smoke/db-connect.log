@@ -1,0 +1,1 @@
+SKIPPED: Requires a reachable SQL Server instance and a developer-supplied connection string (dotnet user-secrets or ConnectionStrings__Default) per bootstrap-plan.md 'Local Development Setup' — not runnable unattended without one, and none was provisioned in this run.

@@ -1,0 +1,23 @@
+{
+  "scenario_id": "GM-039",
+  "captured_at": "2026-08-28T05:24:39Z",
+  "anchor_date": "2026-08-28",
+  "legacy_commit_sha": "66e5eb5",
+  "runtime_version": "4.0.30319.42000",
+  "normalized_fields": [],
+  "input": {
+    "oda_id": 1030,
+    "demirbas_id": 1021,
+    "personel_id": 1524,
+    "adet_talep": "abc"
+  },
+  "output": {
+    "outcome": "REJECTED",
+    "threw": true,
+    "error_code": "QUANTITY_NOT_NUMERIC",
+    "ExceptionType": "System.FormatException",
+    "InnerExceptionType": null,
+    "ExceptionMessage": "Input string was not in a correct format.",
+    "InnerExceptionMessage": null
+  }
+}
