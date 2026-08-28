@@ -9,18 +9,18 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | Proposal | 🟢 Approved | Auto-approved per user's "automate everything" instruction |
-| Spec | ⚪ Pending | |
-| Design | ⚪ Pending | |
-| Tasks | ⚪ Pending | |
+| Spec | 🟢 Complete | 5 FR, 1 NFR, 5 AC |
+| Design | 🟢 Complete | AppShell wrapper refactor + MainMenu screen |
+| Tasks | 🟢 Complete | 5 tasks, 3 waves |
 | Build | ⚪ Pending | |
 | Verify | ⚪ Pending | |
 
 ## Task Progress
 
-**Completed:** 0 / 0
+**Completed:** 0 / 5
 **Failed:** 0
 
-_No tasks yet — run /specclaw:plan._
+_Ready for /specclaw:build._
 
 ## Agent Runs
 
