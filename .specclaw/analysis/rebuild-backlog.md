@@ -241,6 +241,9 @@ _Depends on: none. Module dependency rank 0. 4 active item(s)._
 **Verification:** NO BASELINE DATA — baseline has been run, but no scenario in scenarios.md cites this item's rules
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `main-menu`, merged to `master`, 2026-08-28. All 5 tasks complete, verify PASS on all 5 acceptance criteria (`.specclaw/changes/main-menu/verify-report.md`), 10 backend + 16 frontend tests passing. AppShell is now a generic wrapper; MainMenu renders the SCR-002 layout with all 5 buttons wired to real routes (four currently fall through to NotFound — their destination screens aren't built yet, which is accurate, not a stub). ADMİN button ships disabled by default; DR-003's real gate logic is BL-003's scope, still open. Exit-on-window-close has no built web equivalent — not built, flagged as an open question.
+
 ---
 
 ### BL-003 — Admin Authorization Gate (Admin button enable/disable)
