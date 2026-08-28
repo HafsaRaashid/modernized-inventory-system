@@ -32,6 +32,13 @@ builder.Services.AddSingleton<JwtTokenService>();
 
 var app = builder.Build();
 
+// Force JwtTokenService's construction now rather than on first login: its
+// constructor validates Jwt:SigningKey and throws if it's missing/too short.
+// AddSingleton alone resolves lazily, which would defer that failure to the
+// first request — this line is what actually makes it fail at startup
+// (design.md's "fail loud and early" mitigation for an unset signing key).
+app.Services.GetRequiredService<JwtTokenService>();
+
 // (error-handling pillar) Every unhandled exception is caught, logged, and
 // reshaped into a stable envelope here — no business rule is decided in
 // this middleware.
