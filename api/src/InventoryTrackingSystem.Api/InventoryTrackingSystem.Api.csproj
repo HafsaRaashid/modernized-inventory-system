@@ -15,6 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- BL-003: unlike most ASP.NET Core authentication/authorization types,
+         the JWT bearer handler is not part of the Microsoft.AspNetCore.App
+         shared framework — it depends on the Microsoft.IdentityModel/
+         System.IdentityModel.Tokens.Jwt libraries, which ship only as NuGet
+         packages, so it must be referenced explicitly here. -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <!-- EF Core design-time tooling (dotnet-ef) requires this package on the
          startup project itself — the Infrastructure project's reference has
          PrivateAssets=all and does not flow transitively. -->

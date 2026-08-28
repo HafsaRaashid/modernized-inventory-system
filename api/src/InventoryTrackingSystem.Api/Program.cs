@@ -1,7 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using InventoryTrackingSystem.Api.Middleware;
 using InventoryTrackingSystem.Infrastructure.Auth;
 using InventoryTrackingSystem.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +27,37 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // SQ-004's credential hashing and token issuance (BL-001). Both services
 // are stateless (JwtTokenService reads IConfiguration once at construction,
 // PasswordHasherService holds no state at all) so they're safe as
-// singletons. No authentication scheme/middleware is registered here — no
-// request is gated on the issued token yet; that enforcement is a future
-// backlog item.
+// singletons.
 
 builder.Services.AddSingleton<PasswordHasherService>();
 builder.Services.AddSingleton<JwtTokenService>();
+
+// BL-003: JWT bearer authentication, validated against the same
+// Jwt:SigningKey/Jwt:Issuer configuration keys JwtTokenService already signs
+// tokens with. MapInboundClaims is disabled so [Authorize] actions can read
+// the raw `sub` claim (JwtRegisteredClaimNames.Sub) instead of having the
+// default handler rewrite it to ClaimTypes.NameIdentifier. No audience is
+// issued, so ValidateAudience stays off; ValidateIssuer only turns on when
+// an issuer is actually configured.
+var jwtSigningKey = builder.Configuration["Jwt:SigningKey"] ?? string.Empty;
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSigningKey)),
+            ValidateIssuer = !string.IsNullOrEmpty(jwtIssuer),
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = false,
+            NameClaimType = JwtRegisteredClaimNames.Sub,
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -49,6 +78,9 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 // /api/* to this process (see web/vite.config.ts); in production this API
 // serves the SPA's own build output. Both paths are same-origin from the
 // browser's point of view, so no CORS policy is registered here.
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
