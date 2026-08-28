@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MainMenu } from "../src/routes/MainMenu";
+import { getSession } from "../src/api/auth";
 
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -11,6 +12,10 @@ vi.mock("react-router-dom", async () => {
     useNavigate: () => mockNavigate,
   };
 });
+
+vi.mock("../src/api/auth", () => ({
+  getSession: vi.fn(),
+}));
 
 function renderMainMenu() {
   return render(
@@ -23,6 +28,8 @@ function renderMainMenu() {
 describe("MainMenu", () => {
   beforeEach(() => {
     mockNavigate.mockReset();
+    vi.mocked(getSession).mockReset();
+    vi.mocked(getSession).mockResolvedValue({ username: "user", isAdmin: false });
   });
 
   it("AC-2: renders all five button labels", () => {
@@ -61,13 +68,48 @@ describe("MainMenu", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/reports");
   });
 
-  it("AC-4: the ADMİN button is disabled and clicking it does not navigate", () => {
+  it("AC-2: the ADMİN button starts disabled before getSession() resolves", () => {
+    let resolveSession: (value: { username: string; isAdmin: boolean }) => void = () => {};
+    vi.mocked(getSession).mockReturnValue(
+      new Promise((resolve) => {
+        resolveSession = resolve;
+      }),
+    );
+
     renderMainMenu();
+
+    expect(screen.getByRole("button", { name: "ADMİN" })).toBeDisabled();
+
+    // Avoid an unresolved-promise/act warning leaking into other tests.
+    resolveSession({ username: "user", isAdmin: false });
+  });
+
+  it("AC-1: the ADMİN button becomes enabled after getSession() resolves with isAdmin: true", async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "admin", isAdmin: true });
+
+    renderMainMenu();
+
+    const adminButton = await screen.findByRole("button", { name: "ADMİN" });
+    await waitFor(() => expect(adminButton).toBeEnabled());
+  });
+
+  it("AC-2: the ADMİN button stays disabled after getSession() resolves with isAdmin: false", async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "user", isAdmin: false });
+
+    renderMainMenu();
+
     const adminButton = screen.getByRole("button", { name: "ADMİN" });
-
+    await waitFor(() => expect(getSession).toHaveBeenCalled());
     expect(adminButton).toBeDisabled();
+  });
 
-    fireEvent.click(adminButton);
-    expect(mockNavigate).not.toHaveBeenCalled();
+  it("AC-2: the ADMİN button stays disabled if getSession() rejects", async () => {
+    vi.mocked(getSession).mockRejectedValueOnce(new Error("unauthorized"));
+
+    renderMainMenu();
+
+    const adminButton = screen.getByRole("button", { name: "ADMİN" });
+    await waitFor(() => expect(getSession).toHaveBeenCalled());
+    expect(adminButton).toBeDisabled();
   });
 });
