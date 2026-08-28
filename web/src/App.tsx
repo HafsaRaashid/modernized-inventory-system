@@ -3,18 +3,23 @@ import { useAuth } from "./auth/AuthContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { AppShell } from "./routes/AppShell";
 import { Login } from "./routes/Login";
+import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
 
 /**
- * Renders the app shell when authenticated, otherwise redirects to /login
- * (BL-001 FR-7 / AC-7).
+ * Renders the Main Menu (inside AppShell) when authenticated, otherwise
+ * redirects to /login (BL-001 FR-7 / AC-7; BL-002 FR-2).
  */
 function RequireAuth() {
   const { token } = useAuth();
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-  return <AppShell />;
+  return (
+    <AppShell>
+      <MainMenu />
+    </AppShell>
+  );
 }
 
 /**
