@@ -7,7 +7,7 @@ import { useAuth } from "../auth/AuthContext";
  * capability of its own — just the page frame (header + content region)
  * and the global theme applied in styles/theme.css.
  */
-export function AppShell() {
+export function AppShell({ children }: { children: React.ReactNode }) {
   const { username, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -20,13 +20,12 @@ export function AppShell() {
     <div className="app-shell">
       <header className="app-shell__header">
         <h1>Inventory Tracking System</h1>
-      </header>
-      <main className="app-shell__content">
         <p>Signed in as {username}</p>
         <button type="button" onClick={handleSignOut}>
           Sign Out
         </button>
-      </main>
+      </header>
+      <main className="app-shell__content">{children}</main>
     </div>
   );
 }
