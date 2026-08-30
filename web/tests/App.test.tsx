@@ -9,6 +9,7 @@ import { listPersonnel } from "../src/api/personnel";
 import { createRoomAssignment } from "../src/api/roomAssignments";
 import { listAssetTypes } from "../src/api/assetTypes";
 import { listFixedAssets } from "../src/api/fixedAssets";
+import { listRoomAssetAssignments } from "../src/api/assetAssignments";
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USERNAME_STORAGE_KEY,
@@ -45,6 +46,11 @@ vi.mock("../src/api/fixedAssets", () => ({
   listFixedAssets: vi.fn(),
 }));
 
+vi.mock("../src/api/assetAssignments", () => ({
+  createAssetAssignment: vi.fn(),
+  listRoomAssetAssignments: vi.fn(),
+}));
+
 /**
  * Proves the frontend test runner (test-frontend pillar) executes end to
  * end against this foundation, and that the "/" route's auth gate (BL-001
@@ -69,6 +75,8 @@ describe("App shell", () => {
     vi.mocked(listAssetTypes).mockResolvedValue([]);
     vi.mocked(listFixedAssets).mockReset();
     vi.mocked(listFixedAssets).mockResolvedValue([]);
+    vi.mocked(listRoomAssetAssignments).mockReset();
+    vi.mocked(listRoomAssetAssignments).mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -500,6 +508,39 @@ describe("App shell", () => {
 
     expect(
       await screen.findByRole("button", { name: "GÜNCELLE" }),
+    ).toBeInTheDocument();
+  });
+
+  it("an unauthenticated visit to /asset-assignment shows the Login screen", () => {
+    window.history.pushState({}, "", "/asset-assignment");
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).toBeInTheDocument();
+  });
+
+  it("an authenticated non-admin visiting /asset-assignment sees the Asset Assignment screen", async () => {
+    window.history.pushState({}, "", "/asset-assignment");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "testuser", isAdmin: false });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "KAYDET" }),
     ).toBeInTheDocument();
   });
 });
