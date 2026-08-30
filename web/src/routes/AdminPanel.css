@@ -1,0 +1,34 @@
+/*
+ * SCR-007 (Admin Panel, BL-004). No project-specific token group applies to
+ * this screen (design-tokens.json has none for SCR-007) — layout is plain
+ * grid structure, not a themed accent.
+ */
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.admin-panel__large-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-panel__small-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-panel__button {
+  padding: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-panel__button--small {
+  padding: 1rem;
+  font-size: 0.875rem;
+}

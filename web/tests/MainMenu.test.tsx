@@ -112,4 +112,16 @@ describe("MainMenu", () => {
     await waitFor(() => expect(getSession).toHaveBeenCalled());
     expect(adminButton).toBeDisabled();
   });
+
+  it("AC-1: clicking the enabled ADMİN button navigates to /admin", async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "admin", isAdmin: true });
+
+    renderMainMenu();
+
+    const adminButton = await screen.findByRole("button", { name: "ADMİN" });
+    await waitFor(() => expect(adminButton).toBeEnabled());
+
+    fireEvent.click(adminButton);
+    expect(mockNavigate).toHaveBeenCalledWith("/admin");
+  });
 });
