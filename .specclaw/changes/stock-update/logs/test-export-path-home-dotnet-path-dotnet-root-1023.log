@@ -1,0 +1,95 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  InventoryTrackingSystem.Domain -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Domain\bin\Debug\net8.0\InventoryTrackingSystem.Domain.dll
+  InventoryTrackingSystem.Infrastructure -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Infrastructure\bin\Debug\net8.0\InventoryTrackingSystem.Infrastructure.dll
+  InventoryTrackingSystem.Api -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\src\InventoryTrackingSystem.Api\bin\Debug\net8.0\InventoryTrackingSystem.Api.dll
+  InventoryTrackingSystem.Api.Tests -> C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\tests\InventoryTrackingSystem.Api.Tests\bin\Debug\net8.0\InventoryTrackingSystem.Api.Tests.dll
+Test run for C:\Users\MohamedRaashidBISTEC\OneDrive - BISTEC Global\Documents\specclaw project\modernized-inventory-system\api\tests\InventoryTrackingSystem.Api.Tests\bin\Debug\net8.0\InventoryTrackingSystem.Api.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    61, Skipped:     0, Total:    61, Duration: 21 s - InventoryTrackingSystem.Api.Tests.dll (net8.0)
+
+> inventory-tracking-system-web@0.0.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/MohamedRaashidBISTEC/OneDrive - BISTEC Global/Documents/specclaw project/modernized-inventory-system/web[39m
+
+[90mstderr[2m | tests/RoomUpdate.test.tsx[2m > [22m[2mRoomUpdate[2m > [22m[2mAC-1: renders the room selector, new-name input, and GÜNCELLE button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/RoomAssignment.test.tsx[2m > [22m[2mRoomAssignment[2m > [22m[2mAC-1: renders both selects, both disabled echo inputs, and the KAYDET button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/StockUpdate.test.tsx[2m > [22m[2mStockUpdate[2m > [22m[2mAC-1: renders the asset selector, asset fields, and GÜNCELLE button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/RoomAdd.test.tsx[2m > [22m[2mRoomAdd[2m > [22m[2mAC-1: renders the room-name input, department picker, disabled department-ID echo input, and EKLE button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/StockAdd.test.tsx[2m > [22m[2mStockAdd[2m > [22m[2mAC-1: renders the asset-name, price, purchase-date, asset-type, disabled asset-type-id echo, quantity inputs, and EKLE button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/App.test.tsx[2m > [22m[2mApp shell[2m > [22m[2mrenders without crashing and shows Login when unauthenticated
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/MainMenu.test.tsx[2m > [22m[2mMainMenu[2m > [22m[2mAC-2: renders all five button labels
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m tests/MainMenu.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1288[2mms[22m[39m
+   [33m[2m✓[22m[39m MainMenu[2m > [22mAC-2: renders all five button labels [33m604[2mms[22m[39m
+ [32m✓[39m tests/RoomUpdate.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 1387[2mms[22m[39m
+   [33m[2m✓[22m[39m RoomUpdate[2m > [22mAC-1: renders the room selector, new-name input, and GÜNCELLE button [33m645[2mms[22m[39m
+ [32m✓[39m tests/RoomAssignment.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 1694[2mms[22m[39m
+   [33m[2m✓[22m[39m RoomAssignment[2m > [22mAC-1: renders both selects, both disabled echo inputs, and the KAYDET button [33m674[2mms[22m[39m
+   [33m[2m✓[22m[39m RoomAssignment[2m > [22mshows the generic failure message when createRoomAssignment rejects [33m307[2mms[22m[39m
+ [32m✓[39m tests/RoomAdd.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1680[2mms[22m[39m
+   [33m[2m✓[22m[39m RoomAdd[2m > [22mAC-1: renders the room-name input, department picker, disabled department-ID echo input, and EKLE button [33m704[2mms[22m[39m
+ [32m✓[39m tests/StockUpdate.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1872[2mms[22m[39m
+   [33m[2m✓[22m[39m StockUpdate[2m > [22mAC-1: renders the asset selector, asset fields, and GÜNCELLE button [33m709[2mms[22m[39m
+   [33m[2m✓[22m[39m StockUpdate[2m > [22mAC-3: submitting edited fields calls updateFixedAsset with the right args, shows success, and resets the form [33m362[2mms[22m[39m
+ [32m✓[39m tests/StockAdd.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 1890[2mms[22m[39m
+   [33m[2m✓[22m[39m StockAdd[2m > [22mAC-1: renders the asset-name, price, purchase-date, asset-type, disabled asset-type-id echo, quantity inputs, and EKLE button [33m782[2mms[22m[39m
+   [33m[2m✓[22m[39m StockAdd[2m > [22mAC-3: submitting with all fields filled calls createFixedAsset with the right args and shows success, resetting fields [33m347[2mms[22m[39m
+ [32m✓[39m tests/App.test.tsx [2m([22m[2m24 tests[22m[2m)[22m[33m 2387[2mms[22m[39m
+   [33m[2m✓[22m[39m App shell[2m > [22mAC-5: an authenticated non-admin visiting /admin ends up back at the Main Menu [33m487[2mms[22m[39m
+[90mstderr[2m | tests/RoomDelete.test.tsx[2m > [22m[2mRoomDelete[2m > [22m[2mAC-1: renders the room selector and SİL button
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/Login.test.tsx[2m > [22m[2mLogin[2m > [22m[2mAC-2: shows the failure message and resets both fields when login is rejected
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | tests/AppShell.test.tsx[2m > [22m[2mAppShell[2m > [22m[2mAC-1: renders header chrome and arbitrary children
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m tests/AppShell.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 421[2mms[22m[39m
+   [33m[2m✓[22m[39m AppShell[2m > [22mAC-1: renders header chrome and arbitrary children [33m342[2mms[22m[39m
+ [32m✓[39m tests/RoomDelete.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 653[2mms[22m[39m
+   [33m[2m✓[22m[39m RoomDelete[2m > [22mAC-1: renders the room selector and SİL button [33m374[2mms[22m[39m
+ [32m✓[39m tests/Login.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 714[2mms[22m[39m
+   [33m[2m✓[22m[39m Login[2m > [22mAC-2: shows the failure message and resets both fields when login is rejected [33m465[2mms[22m[39m
+[90mstderr[2m | tests/AdminPanel.test.tsx[2m > [22m[2mAdminPanel[2m > [22m[2mAC-2: renders all five button labels
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m tests/AdminPanel.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 665[2mms[22m[39m
+   [33m[2m✓[22m[39m AdminPanel[2m > [22mAC-2: renders all five button labels [33m409[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m90 passed[39m[22m[90m (90)[39m
+[2m   Start at [22m 17:02:20
+[2m   Duration [22m 13.74s[2m (transform 3.58s, setup 5.63s, collect 12.14s, tests 14.65s, environment 31.35s, prepare 5.98s)[22m
+
