@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { getSession } from "./api/auth";
 import { useAuth } from "./auth/AuthContext";
@@ -8,6 +8,7 @@ import { AppShell } from "./routes/AppShell";
 import { Login } from "./routes/Login";
 import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
+import { RoomAdd } from "./routes/RoomAdd";
 
 /**
  * Renders the Main Menu (inside AppShell) when authenticated, otherwise
@@ -26,14 +27,17 @@ function RequireAuth() {
 }
 
 /**
- * Renders the Admin Panel when authenticated and admin, otherwise redirects:
+ * Renders `children` when authenticated and admin, otherwise redirects:
  * to /login if unauthenticated, to / if authenticated but not an admin
- * (BL-004 FR-4/FR-5). Extends BL-003's admin gate to the /admin route
- * itself, since the URL bar is a second entry point the legacy app never
- * had. Renders nothing while the admin check is pending, to avoid flashing
- * either the Admin Panel or a premature redirect.
+ * (BL-004 FR-4/FR-5). Extends BL-003's admin gate to whichever admin-only
+ * route it wraps, since the URL bar is a second entry point the legacy app
+ * never had. Renders nothing while the admin check is pending, to avoid
+ * flashing either the wrapped content or a premature redirect. Generalized
+ * from hardcoding `<AdminPanel />` (BL-004) so admin-only routes beyond
+ * `/admin` — e.g. `/room-add` (BL-005) — can share this one guard instead of
+ * each duplicating its loading/redirect logic.
  */
-function RequireAdmin() {
+function RequireAdmin({ children }: { children: ReactNode }) {
   const { token } = useAuth();
   const [status, setStatus] = useState<"loading" | "admin" | "not-admin">(
     "loading",
@@ -69,11 +73,7 @@ function RequireAdmin() {
   if (status === "not-admin") {
     return <Navigate to="/" replace />;
   }
-  return (
-    <AppShell>
-      <AdminPanel />
-    </AppShell>
-  );
+  return <AppShell>{children}</AppShell>;
 }
 
 /**
@@ -86,7 +86,22 @@ export default function App() {
     <ErrorBoundary>
       <Routes>
         <Route path="/" element={<RequireAuth />} />
-        <Route path="/admin" element={<RequireAdmin />} />
+        <Route
+          path="/admin"
+          element={
+            <RequireAdmin>
+              <AdminPanel />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/room-add"
+          element={
+            <RequireAdmin>
+              <RoomAdd />
+            </RequireAdmin>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
