@@ -230,3 +230,18 @@ Compound-word controller names (AssetTypesController, FixedAssetsController) req
 None needed — pattern held. Continue flagging this explicitly in task notes for any future compound-word controller.
 
 ---
+
+## [L16] pattern — Extending an existing controller/interceptor (FixedAssets...
+
+**When:** 2026-08-30 11:30 UTC
+**Category:** pattern
+**Priority:** low
+**Status:** pending
+
+### Detail
+Extending an existing controller/interceptor (FixedAssetsController's List/Update, DuplicateFixedAssetNameSimulatingInterceptor's Modified-state coverage) with an explicit design.md pointer to the exact prior pattern (RoomsController.Update, DuplicateRoomNameSimulatingInterceptor) let both subagents replicate the fix correctly on the first pass, including the critical no-op-rename regression test.
+
+### Action
+Continue citing the exact prior file/pattern by name in task notes when a new task's shape has already been solved once elsewhere in the codebase.
+
+---
