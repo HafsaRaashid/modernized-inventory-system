@@ -455,6 +455,9 @@ _Depends on: MOD-001. Module dependency rank 1. 3 active item(s)._
 **Verification:** VERIFIABLE — fixtures: GM-005 (66e5eb5), GM-006 (66e5eb5), GM-007 (66e5eb5), GM-008 (66e5eb5), GM-009 (66e5eb5), GM-010 (66e5eb5), GM-013 (66e5eb5), GM-014 (66e5eb5), GM-020 (66e5eb5), GM-022 (66e5eb5), GM-038 (66e5eb5), GM-039 (66e5eb5), GM-041 (66e5eb5), GM-043 (66e5eb5), GM-044 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `stock-update`, merged to `master` at commit `0c74647` (branch `specclaw/stock-update`), 2026-08-30. All 5 tasks complete, verify PASS on all 15 acceptance criteria (`.specclaw/changes/stock-update/verify-report.md`), 61 backend + 90 frontend tests passing. Extended `FixedAssetsController` (BL-009) with admin-gated `List`/`Update` actions (genuinely ID-keyed, no CQ-004-style ambiguity), extended `DuplicateFixedAssetNameSimulatingInterceptor` to cover `Modified` state excluding the record's own id (mirrors the BL-006 fix for Room), and the Stock Update screen with a correctly-wired letter-only filter on the asset-name field (DR-006 — the opposite of Stock Add's deliberate gap) and a single generic error message ("Güncellenirken hata oluştu..."), wired through the existing `RequireAdmin` guard. No new migration — reuses BL-009's schema. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (deferred to end of backlog), GM-007/GM-008 and this screen's own row-selection/update/error-path fixtures still PENDING CAPTURE.
+
 ---
 
 ### BL-011 — Asset Assignment and Stock Decrement (Composite Flow)
