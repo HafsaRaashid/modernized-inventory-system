@@ -1,0 +1,7 @@
+exit=0
+duration_s=24
+log=.specclaw/changes/stock-add/logs/test-export-path-home-dotnet-path-dotnet-root-367.log
+head=a86048960cf4f0e9a27e9bd7082a3c5659eac1e4
+dirty=true
+cmd=export PATH=$HOME/.dotnet:$PATH DOTNET_ROOT=$HOME/.dotnet; (cd api && dotnet test) && (cd web && npm test)
+interrupted=false

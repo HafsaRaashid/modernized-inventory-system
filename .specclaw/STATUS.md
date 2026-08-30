@@ -1,7 +1,7 @@
 # 🦞 SpecClaw Dashboard
 
 **Project:** modernized-inventory-system
-**Last Updated:** 2026-08-30 10:55 UTC
+**Last Updated:** 2026-08-30 11:10 UTC
 
 ## Active Changes
 
@@ -10,6 +10,7 @@
 - ✅ **room-assignment** — 7/7 tasks (100%) | 0 failed
 - ✅ **room-delete** — 5/5 tasks (100%) | 0 failed
 - ✅ **room-update** — 5/5 tasks (100%) | 0 failed
+- ✅ **stock-add** — 7/7 tasks (100%) | 0 failed
 
 ## Pending Proposals
 
@@ -25,6 +26,6 @@ _None._
 
 ## Stats
 
-- **Total changes:** 8
-- **Active:** 4
+- **Total changes:** 9
+- **Active:** 5
 - **Completed:** 4

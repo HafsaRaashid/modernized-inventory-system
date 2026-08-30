@@ -215,3 +215,18 @@ RoomAssignmentsController used the default [Route("api/[controller]")] conventio
 For any FUTURE controller whose name is a compound/multi-word noun (not just Rooms/Departments/Personnel-style single words), explicitly verify or override the route with [Route("api/kebab-case-name")] rather than trusting the [controller] token -- don't rely on case-insensitive matching to save a compound name
 
 ---
+
+## [L15] pattern — Compound-word controller names (AssetTypesController, Fix...
+
+**When:** 2026-08-30 11:09 UTC
+**Category:** pattern
+**Priority:** low
+**Status:** pending
+
+### Detail
+Compound-word controller names (AssetTypesController, FixedAssetsController) required explicit hyphenated [Route] attributes to match the frontend's kebab-case paths, per the design.md warning citing the earlier RoomAssignmentsController bug; both agents got it right this time without a fix-up cycle.
+
+### Action
+None needed — pattern held. Continue flagging this explicitly in task notes for any future compound-word controller.
+
+---
