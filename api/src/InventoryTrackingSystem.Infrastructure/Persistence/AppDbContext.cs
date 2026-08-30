@@ -24,6 +24,10 @@ public class AppDbContext : DbContext
 
     public DbSet<RoomAssetAssignment> RoomAssetAssignments => Set<RoomAssetAssignment>();
 
+    public DbSet<FixedAsset> FixedAssets => Set<FixedAsset>();
+
+    public DbSet<AssetType> AssetTypes => Set<AssetType>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -35,5 +39,9 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<RoomAssetAssignment>().HasOne<Room>().WithMany().HasForeignKey(a => a.RoomId);
         modelBuilder.Entity<RoomAssetAssignment>().HasOne<Personnel>().WithMany().HasForeignKey(a => a.PersonnelId);
+
+        modelBuilder.Entity<FixedAsset>().HasIndex(a => a.Name).IsUnique();
+        modelBuilder.Entity<FixedAsset>().Property(a => a.Price).HasColumnType("decimal(19,4)");
+        modelBuilder.Entity<FixedAsset>().HasOne<AssetType>().WithMany().HasForeignKey(a => a.AssetTypeId);
     }
 }
