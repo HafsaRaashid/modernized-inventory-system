@@ -13,6 +13,7 @@ import { RoomAssignment } from "./routes/RoomAssignment";
 import { RoomDelete } from "./routes/RoomDelete";
 import { RoomUpdate } from "./routes/RoomUpdate";
 import { StockAdd } from "./routes/StockAdd";
+import { StockUpdate } from "./routes/StockUpdate";
 
 /**
  * Renders `children` (inside AppShell) when authenticated, otherwise
@@ -141,6 +142,14 @@ export default function App() {
           element={
             <RequireAdmin>
               <StockAdd />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/stock-update"
+          element={
+            <RequireAdmin>
+              <StockUpdate />
             </RequireAdmin>
           }
         />
