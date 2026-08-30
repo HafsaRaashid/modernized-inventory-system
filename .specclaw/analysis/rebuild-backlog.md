@@ -268,6 +268,9 @@ _Depends on: none. Module dependency rank 0. 4 active item(s)._
 **Verification:** VERIFIABLE — fixtures: GM-015 (66e5eb5), GM-016 (66e5eb5), GM-018 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `admin-authorization-gate`, merged to `master`, 2026-08-28. All 4 tasks complete, verify PASS on all 8 acceptance criteria (`.specclaw/changes/admin-authorization-gate/verify-report.md`), 16 backend + 19 frontend tests passing. JWT bearer authentication is now registered and validated (previously issued but never checked); `GET /api/auth/me` reports `{ username, isAdmin }` fail-closed on `YetkiID` false/null; Main Menu's ADMİN button now reflects the real gate instead of BL-002's hardcoded disabled state. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (deferred to end of backlog per project decision), GM-017 (broken harness capture, non-blocking).
+
 ---
 
 ### BL-004 — Admin Panel Sub-Navigation

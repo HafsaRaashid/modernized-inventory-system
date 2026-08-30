@@ -65,3 +65,48 @@ specclaw-build setup created the specclaw/main-menu feature branch from origin/m
 Push to origin before running /specclaw:build if git.strategy is branch-per-change and local master is ahead of origin — or verify the new branch's log includes the change's own plan commit before starting wave 1.
 
 ---
+
+## [L5] design_gap — Program.cs's original JWT bearer options captured Jwt:Sig...
+
+**When:** 2026-08-28 16:27 UTC
+**Category:** design_gap
+**Priority:** medium
+**Status:** pending
+
+### Detail
+Program.cs's original JWT bearer options captured Jwt:SigningKey/Jwt:Issuer into local variables read from builder.Configuration BEFORE builder.Build() ran, so any configuration source layered on after CreateBuilder (e.g. a WebApplicationFactory test override) was invisible to token validation even though JwtTokenService (DI-resolved post-Build) saw it fine. Caused spurious 401s in integration tests.
+
+### Action
+Read Jwt:SigningKey/Jwt:Issuer lazily inside the AddJwtBearer options delegate (off the captured builder.Configuration ConfigurationManager reference) instead of into eager local variables, so any config layered in before Build() completes is picked up consistently by both token issuance and validation.
+
+---
+
+## [L6] agent_issue — specclaw-build setup branched specclaw/admin-panel from s...
+
+**When:** 2026-08-28 16:44 UTC
+**Category:** agent_issue
+**Priority:** high
+**Status:** pending
+
+### Detail
+specclaw-build setup branched specclaw/admin-panel from stale origin/master (last pushed at BL-002's merge) instead of local master, which already had BL-003's merge — this silently reverted MainMenu.tsx's working-tree content to its pre-BL-003 state and left .specclaw/changes/admin-authorization-gate/ untracked on the new branch. Second occurrence of the exact issue logged as L4 during BL-002's build.
+
+### Action
+Caught before any task work began by diffing uncommitted changes against local master, then fixed with git stash -u; git merge --ff-only master; git stash pop. Recurs on every new branch-per-change change while local master stays ahead of origin/master with no commits pushed. The durable fix is to push master to origin right after each merge, or have specclaw-build setup branch from local master instead of a remote-tracking ref.
+
+---
+
+## [L7] best_practice — Spec/design for BL-004 needed no adjustment during build ...
+
+**When:** 2026-08-30 04:00 UTC
+**Category:** best_practice
+**Priority:** low
+**Status:** pending
+
+### Detail
+Spec/design for BL-004 needed no adjustment during build — RequireAdmin's three-state loading pattern and AdminPanel's button-grid structure were specified precisely enough to implement verbatim. Parallel wave-3 test agents that ran vitest themselves before reporting done caught zero issues, confirming self-verifying test agents are reliable for this repo.
+
+### Action
+None — reinforces current spec/design detail level and test-agent self-verification practice
+
+---
