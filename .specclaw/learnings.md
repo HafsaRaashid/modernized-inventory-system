@@ -245,3 +245,18 @@ Extending an existing controller/interceptor (FixedAssetsController's List/Updat
 Continue citing the exact prior file/pattern by name in task notes when a new task's shape has already been solved once elsewhere in the codebase.
 
 ---
+
+## [L17] best_practice — A composite multi-entity write (insert RoomAssetAssignmen...
+
+**When:** 2026-08-30 12:01 UTC
+**Category:** best_practice
+**Priority:** medium
+**Status:** pending
+
+### Detail
+A composite multi-entity write (insert RoomAssetAssignment + decrement FixedAsset.Quantity) was made atomic by tracking both mutations on one AppDbContext and calling SaveChangesAsync() exactly once, instead of an explicit Database.BeginTransactionAsync()/CommitAsync(). The explicit-transaction approach would have broken every WebApplicationFactory-based test in this project, since the EF Core InMemory provider does not support transactions.
+
+### Action
+For any future item needing an atomic multi-write against this project's stack, default to one SaveChangesAsync() call tracking all mutations rather than an explicit transaction, unless a real need for isolation/rollback semantics beyond a single call is identified.
+
+---
