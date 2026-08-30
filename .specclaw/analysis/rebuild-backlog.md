@@ -292,6 +292,9 @@ _Depends on: none. Module dependency rank 0. 4 active item(s)._
 **Verification:** VERIFIABLE — fixtures: GM-015 (66e5eb5), GM-016 (66e5eb5), GM-018 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `admin-panel`, merged to `master` at commit `90b51c1` (branch `specclaw/admin-panel`), 2026-08-30. All 5 tasks complete, verify PASS on all 7 acceptance criteria (`.specclaw/changes/archive/2026-08-30-admin-panel/verify-report.md`), 16 backend + 30 frontend tests passing. ADMİN button now navigates to `/admin`; AdminPanel screen renders SCR-007's layout with all five buttons wired to real routes (Stock Add/Update, Room Delete/Add/Update — all four Room routes, including Room Add's `/room-add`, currently fall through to NotFound since their destination screens aren't built yet); `/admin` is gated by a new `RequireAdmin` guard reusing BL-003's `GET /api/auth/me` check. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (`.specclaw/ui/ui-manifest.json` absent, deferred to end of backlog per project decision).
+
 ## MOD-002 — Room Management
 
 _Depends on: MOD-001. Module dependency rank 1. 4 active item(s)._
@@ -317,6 +320,9 @@ _Depends on: MOD-001. Module dependency rank 1. 4 active item(s)._
 **Gate:** OPEN QUESTIONS — risk from unanswered, non-blocking: CQ-027; UI fidelity: SQ-013 decided FAITHFUL, required artifacts missing
 **Verification:** VERIFIABLE — fixtures: GM-013 (66e5eb5), GM-014 (66e5eb5), GM-020 (66e5eb5), GM-022 (66e5eb5), GM-038 (66e5eb5), GM-041 (66e5eb5), GM-043 (66e5eb5), GM-044 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
+
+**Status notes (human-added):**
+- BUILT: change `room-add`, merged to `master` at commit `379cc66` (branch `specclaw/room-add`), 2026-08-30. All 7 tasks complete, verify PASS on all 13 acceptance criteria (`.specclaw/changes/room-add/verify-report.md`), 24 backend + 41 frontend tests passing. First full-stack item in the rebuild: new `Room`/`Department` entities, an EF Core migration adding a real uniqueness constraint on `Room.Name` (CQ-018 fix), genuine post-success field-clearing (CQ-008 fix), admin-gated `POST /api/rooms` + `GET /api/departments` endpoints (server-side admin check, not just the frontend route guard), and the Room Add screen wired through a generalized `RequireAdmin` guard shared with `/admin`. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (deferred to end of backlog per project decision), GM-019/GM-020/GM-022 PENDING CAPTURE and GM-021 not reusable as-is (constrained schema changes its outcome).
 
 ---
 

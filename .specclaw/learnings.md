@@ -110,3 +110,63 @@ Spec/design for BL-004 needed no adjustment during build — RequireAdmin's thre
 None — reinforces current spec/design detail level and test-agent self-verification practice
 
 ---
+
+## [L8] design_gap — design.md incorrectly assumed EF Core's InMemory provider...
+
+**When:** 2026-08-30 05:15 UTC
+**Category:** design_gap
+**Priority:** medium
+**Status:** pending
+
+### Detail
+design.md incorrectly assumed EF Core's InMemory provider enforces HasIndex().IsUnique() the same way a real unique index does. It does not — InMemory only enforces uniqueness for primary/alternate keys (HasAlternateKey), not for arbitrary indexes. T6's agent discovered this empirically and worked around it with a test-only SaveChangesInterceptor (RoomsControllerTests.cs) that simulates the DbUpdateException a real SQL Server unique-index violation produces, so RoomsController's actual catch(DbUpdateException) path is genuinely exercised.
+
+### Action
+Future backlog items relying on a DB-level unique constraint (e.g. any duplicate-name check) must plan for this InMemory limitation in their design.md up front — either the same simulate-via-interceptor technique, or noting that AC coverage for uniqueness needs a real relational provider (e.g. SQLite in-memory, which DOES enforce unique indexes) instead of EF Core InMemory
+
+---
+
+## [L9] best_practice — This was the first full-stack (entity+migration+endpoint+...
+
+**When:** 2026-08-30 05:15 UTC
+**Category:** best_practice
+**Priority:** low
+**Status:** pending
+
+### Detail
+This was the first full-stack (entity+migration+endpoint+screen) backlog item in the rebuild, following three pure-frontend-routing items. Spec/design's decision to generalize RequireAdmin (BL-004's hardcoded AdminPanel guard) into a reusable children-accepting wrapper worked cleanly — AC-12's regression check passed with zero changes needed to existing /admin tests, confirming the refactor was behavior-preserving.
+
+### Action
+Continue generalizing shared guards/patterns proactively when a second consumer appears, rather than duplicating; this pattern will keep paying off for BL-006/007/009/010's own admin-gated routes
+
+---
+
+## [L10] best_practice — Second consecutive backlog item to extend an existing con...
+
+**When:** 2026-08-30 06:54 UTC
+**Category:** best_practice
+**Priority:** low
+**Status:** pending
+
+### Detail
+Second consecutive backlog item to extend an existing controller/API-client file rather than create a parallel one (RoomsController gained List/Update alongside Create; rooms.ts gained listRooms/updateRoom alongside createRoom). Reusing BL-005's AdminAuthorizationExtensions, RequireAdmin guard, and DuplicateRoomNameSimulatingInterceptor test helper meant this item needed zero new auth/migration infrastructure — smallest item yet (5 tasks/3 waves vs BL-005's 7/4).
+
+### Action
+Continue favoring extension over parallel new files/controllers when a capability is a natural addition to an existing resource (same entity, same admin-gating story) — matches this project's own module-cohesion pattern
+
+---
+
+## [L11] design_gap — The DuplicateRoomNameSimulatingInterceptor built for BL-0...
+
+**When:** 2026-08-30 06:54 UTC
+**Category:** design_gap
+**Priority:** low
+**Status:** pending
+
+### Detail
+The DuplicateRoomNameSimulatingInterceptor built for BL-005's Create-only duplicate-name test only checked EntityState.Added, silently missing rename (Modified) collisions until BL-006's Update tests needed it — caught and fixed by the T4 test agent (now checks Added|Modified, excluding the candidate's own row by Id so a no-op same-name rename isn't flagged).
+
+### Action
+When a shared test double is built for one operation (Create), assume future sibling operations (Update/Delete) on the same entity will need it too, and design it to cover all EntityStates from the start rather than only the one in scope at the time
+
+---
