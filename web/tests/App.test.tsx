@@ -1,12 +1,17 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
+import { getSession } from "../src/api/auth";
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USERNAME_STORAGE_KEY,
   AuthProvider,
 } from "../src/auth/AuthContext";
+
+vi.mock("../src/api/auth", () => ({
+  getSession: vi.fn(),
+}));
 
 /**
  * Proves the frontend test runner (test-frontend pillar) executes end to
@@ -15,6 +20,13 @@ import {
  * authenticated cases.
  */
 describe("App shell", () => {
+  beforeEach(() => {
+    // Sensible default so pre-existing "/" tests (which never touch /admin
+    // or getSession) keep working unaffected by the mock.
+    vi.mocked(getSession).mockReset();
+    vi.mocked(getSession).mockResolvedValue({ username: "user", isAdmin: false });
+  });
+
   afterEach(() => {
     sessionStorage.clear();
     // The "/" -> "/login" redirect (AC-7) uses history.replaceState, which
@@ -61,5 +73,81 @@ describe("App shell", () => {
 
     expect(screen.getByText("Inventory Tracking System")).toBeInTheDocument();
     expect(screen.getByText("Signed in as testuser")).toBeInTheDocument();
+  });
+
+  it("AC-4: an unauthenticated visit to /admin shows the Login screen", () => {
+    window.history.pushState({}, "", "/admin");
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).toBeInTheDocument();
+  });
+
+  it("AC-5: an authenticated non-admin visiting /admin ends up back at the Main Menu", async () => {
+    window.history.pushState({}, "", "/admin");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "testuser", isAdmin: false });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByText("Inventory Tracking System")).toBeInTheDocument(),
+    );
+    expect(
+      screen.queryByRole("button", { name: "Stok Ekle" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("AC-6: an authenticated admin visiting /admin sees the Admin Panel", async () => {
+    window.history.pushState({}, "", "/admin");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "adminuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "adminuser", isAdmin: true });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "Stok Ekle" }),
+    ).toBeInTheDocument();
+  });
+
+  it("FR-5: renders nothing while the admin check is pending", () => {
+    window.history.pushState({}, "", "/admin");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockReturnValue(new Promise(() => {}));
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).not.toBeInTheDocument();
+    expect(screen.queryByText("Inventory Tracking System")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Stok Ekle" }),
+    ).not.toBeInTheDocument();
   });
 });
