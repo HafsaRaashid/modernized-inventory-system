@@ -9,23 +9,23 @@ import { Login } from "./routes/Login";
 import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
 import { RoomAdd } from "./routes/RoomAdd";
+import { RoomAssignment } from "./routes/RoomAssignment";
 import { RoomDelete } from "./routes/RoomDelete";
 import { RoomUpdate } from "./routes/RoomUpdate";
 
 /**
- * Renders the Main Menu (inside AppShell) when authenticated, otherwise
- * redirects to /login (BL-001 FR-7 / AC-7; BL-002 FR-2).
+ * Renders `children` (inside AppShell) when authenticated, otherwise
+ * redirects to /login (BL-001 FR-7 / AC-7; BL-002 FR-2). Generalized from
+ * hardcoding `<MainMenu />` so any route requiring only authentication
+ * (not admin) — e.g. `/room-assignment` (BL-008) — can share this one
+ * guard, the same refactor already applied to `RequireAdmin` (BL-005).
  */
-function RequireAuth() {
+function RequireAuth({ children }: { children: ReactNode }) {
   const { token } = useAuth();
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-  return (
-    <AppShell>
-      <MainMenu />
-    </AppShell>
-  );
+  return <AppShell>{children}</AppShell>;
 }
 
 /**
@@ -87,7 +87,22 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Routes>
-        <Route path="/" element={<RequireAuth />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <MainMenu />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/room-assignment"
+          element={
+            <RequireAuth>
+              <RoomAssignment />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/admin"
           element={
