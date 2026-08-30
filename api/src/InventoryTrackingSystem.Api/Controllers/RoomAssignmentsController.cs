@@ -20,7 +20,7 @@ namespace InventoryTrackingSystem.Api.Controllers;
 /// violate — this is a plain insert, not an upsert.
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/room-assignments")]
 [Authorize]
 public class RoomAssignmentsController : ControllerBase
 {
