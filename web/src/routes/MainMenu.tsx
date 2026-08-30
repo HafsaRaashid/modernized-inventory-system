@@ -64,6 +64,7 @@ export function MainMenu() {
           type="button"
           className="main-menu__button"
           disabled={!isAdmin}
+          onClick={() => navigate("/admin")}
         >
           ADMİN
         </button>
