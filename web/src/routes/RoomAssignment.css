@@ -1,0 +1,83 @@
+/*
+ * SCR-006 (Room Assignment, "ODA ATAMA"). No project-specific token group
+ * applies to this screen (design-tokens.json has none for SCR-006) — a
+ * plain bordered section, matching RoomAdd's simple form layout, with the
+ * room/personnel pickers and their echo fields laid out side by side.
+ */
+.room-assignment {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.room-assignment__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 32rem;
+  padding: 1.5rem;
+  border: 1px solid #999;
+}
+
+.room-assignment__title {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.room-assignment__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.room-assignment__field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.room-assignment__input,
+.room-assignment__select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.room-assignment__button {
+  align-self: center;
+  padding: 0.6rem 2rem;
+  border: none;
+  background: #0078d4;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.room-assignment__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.room-assignment__back {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: #0078d4;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.room-assignment__message {
+  font-size: 0.85rem;
+}
+
+.room-assignment__message--success {
+  color: green;
+}
+
+.room-assignment__message--error {
+  color: red;
+}
