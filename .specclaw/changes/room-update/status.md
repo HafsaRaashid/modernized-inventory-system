@@ -13,7 +13,7 @@
 | Design | 🟢 Complete | Extends BL-005's RoomsController/Room entity/RequireAdmin — no new migration |
 | Tasks | 🟢 Complete | 5 tasks, 3 waves |
 | Build | ⚪ Pending | |
-| Verify | ⚪ Pending | |
+| Verify | ✅ Passed |  |
 
 ## Task Progress
 
