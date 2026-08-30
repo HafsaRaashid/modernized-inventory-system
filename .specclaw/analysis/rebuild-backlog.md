@@ -429,6 +429,9 @@ _Depends on: MOD-001. Module dependency rank 1. 3 active item(s)._
 **Verification:** VERIFIABLE — fixtures: GM-005 (66e5eb5), GM-006 (66e5eb5), GM-007 (66e5eb5), GM-008 (66e5eb5), GM-009 (66e5eb5), GM-010 (66e5eb5), GM-013 (66e5eb5), GM-014 (66e5eb5), GM-020 (66e5eb5), GM-022 (66e5eb5), GM-038 (66e5eb5), GM-039 (66e5eb5), GM-041 (66e5eb5), GM-043 (66e5eb5), GM-044 (66e5eb5)
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `stock-add`, merged to `master` at commit `a351837` (branch `specclaw/stock-add`), 2026-08-30. All 7 tasks complete, verify PASS on all 13 acceptance criteria (`.specclaw/changes/stock-add/verify-report.md`), 51 backend + 79 frontend tests passing. New `FixedAsset`/`AssetType` entities, an EF Core migration adding `FixedAsset.Name`'s uniqueness constraint (CQ-018) and `decimal(19,4)` price type (CQ-013), admin-gated `POST /api/fixed-assets` + `GET /api/asset-types` endpoints with explicit hyphenated routes (avoiding the earlier `RoomAssignmentsController` route-mismatch bug class), and the Stock Add screen (faithfully missing the asset-name letter-filter per CQ-015) wired through the existing `RequireAdmin` guard. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (deferred to end of backlog per project decision), GM fixtures for this screen's own insert/validation/duplicate paths still PENDING CAPTURE.
+
 ---
 
 ### BL-010 — Stock / Asset Update
