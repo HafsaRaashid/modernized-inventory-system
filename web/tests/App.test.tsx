@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { getSession } from "../src/api/auth";
 import { listDepartments } from "../src/api/departments";
+import { listRooms } from "../src/api/rooms";
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USERNAME_STORAGE_KEY,
@@ -16,6 +17,11 @@ vi.mock("../src/api/auth", () => ({
 
 vi.mock("../src/api/departments", () => ({
   listDepartments: vi.fn(),
+}));
+
+vi.mock("../src/api/rooms", () => ({
+  listRooms: vi.fn(),
+  updateRoom: vi.fn(),
 }));
 
 /**
@@ -32,6 +38,8 @@ describe("App shell", () => {
     vi.mocked(getSession).mockResolvedValue({ username: "user", isAdmin: false });
     vi.mocked(listDepartments).mockReset();
     vi.mocked(listDepartments).mockResolvedValue([]);
+    vi.mocked(listRooms).mockReset();
+    vi.mocked(listRooms).mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -210,6 +218,61 @@ describe("App shell", () => {
 
     expect(
       await screen.findByRole("button", { name: "EKLE" }),
+    ).toBeInTheDocument();
+  });
+
+  it("an unauthenticated visit to /room-update shows the Login screen", () => {
+    window.history.pushState({}, "", "/room-update");
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).toBeInTheDocument();
+  });
+
+  it("an authenticated non-admin visiting /room-update ends up back at the Main Menu", async () => {
+    window.history.pushState({}, "", "/room-update");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "testuser", isAdmin: false });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByText("Inventory Tracking System")).toBeInTheDocument(),
+    );
+    expect(
+      screen.queryByRole("button", { name: "GÜNCELLE" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("an authenticated admin visiting /room-update sees the Room Update screen", async () => {
+    window.history.pushState({}, "", "/room-update");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "adminuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "adminuser", isAdmin: true });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "GÜNCELLE" }),
     ).toBeInTheDocument();
   });
 });
