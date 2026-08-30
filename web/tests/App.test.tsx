@@ -8,6 +8,7 @@ import { listRooms, deleteRoom } from "../src/api/rooms";
 import { listPersonnel } from "../src/api/personnel";
 import { createRoomAssignment } from "../src/api/roomAssignments";
 import { listAssetTypes } from "../src/api/assetTypes";
+import { listFixedAssets } from "../src/api/fixedAssets";
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USERNAME_STORAGE_KEY,
@@ -40,6 +41,10 @@ vi.mock("../src/api/assetTypes", () => ({
   listAssetTypes: vi.fn(),
 }));
 
+vi.mock("../src/api/fixedAssets", () => ({
+  listFixedAssets: vi.fn(),
+}));
+
 /**
  * Proves the frontend test runner (test-frontend pillar) executes end to
  * end against this foundation, and that the "/" route's auth gate (BL-001
@@ -62,6 +67,8 @@ describe("App shell", () => {
     vi.mocked(createRoomAssignment).mockReset();
     vi.mocked(listAssetTypes).mockReset();
     vi.mocked(listAssetTypes).mockResolvedValue([]);
+    vi.mocked(listFixedAssets).mockReset();
+    vi.mocked(listFixedAssets).mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -438,6 +445,61 @@ describe("App shell", () => {
 
     expect(
       await screen.findByRole("button", { name: "EKLE" }),
+    ).toBeInTheDocument();
+  });
+
+  it("AC-12: an unauthenticated visit to /stock-update shows the Login screen", () => {
+    window.history.pushState({}, "", "/stock-update");
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).toBeInTheDocument();
+  });
+
+  it("AC-13: an authenticated non-admin visiting /stock-update ends up back at the Main Menu", async () => {
+    window.history.pushState({}, "", "/stock-update");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "testuser", isAdmin: false });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByText("Inventory Tracking System")).toBeInTheDocument(),
+    );
+    expect(
+      screen.queryByRole("button", { name: "GÜNCELLE" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("an authenticated admin visiting /stock-update sees the Stock Update screen", async () => {
+    window.history.pushState({}, "", "/stock-update");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "adminuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "adminuser", isAdmin: true });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "GÜNCELLE" }),
     ).toBeInTheDocument();
   });
 });
