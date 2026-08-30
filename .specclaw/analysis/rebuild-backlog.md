@@ -398,6 +398,9 @@ Workflow: "Room-to-Personnel Assignment (linear) - frmOdaTanimlama.cs: user sele
 **Verification:** NO BASELINE DATA — baseline has been run, but no scenario in scenarios.md cites this item's rules
 **UI fidelity:** ⚠ UI GROUNDING MISSING — FAITHFUL decided (SQ-013) but these artifacts are absent: .specclaw/ui/screens/, .specclaw/ui/ui-manifest.json — run /specclaw:bf-ui
 
+**Status notes (human-added):**
+- BUILT: change `room-assignment`, merged to `master` at commit `0f812eb` (branch `specclaw/room-assignment`), 2026-08-30. All 7 tasks complete, verify PASS on all 13 acceptance criteria (`.specclaw/changes/room-assignment/verify-report.md`), 43 backend + 69 frontend tests passing. New `Personnel`/`RoomAssetAssignment` entities (shared table per CQ-003, `AssetId`/`Quantity` reserved for BL-011), admin-authless `GET /api/personnel` + `POST /api/room-assignments` endpoints (auth-only, not admin-gated — reached from Main Menu, not Admin Panel), and the Room Assignment screen wired through a generalized `RequireAuth` guard. Fixes CQ-005's missing empty-selection guard. Still open: CQ-027 (unanswered, doesn't apply to this item), UI screenshot sign-off (deferred to end of backlog), CQ-023's FK-guard against room-asset assignments deliberately deferred (not this item's scope).
+
 ## MOD-003 — Asset Assignment & Stock
 
 _Depends on: MOD-001. Module dependency rank 1. 3 active item(s)._
