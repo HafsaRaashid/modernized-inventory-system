@@ -80,6 +80,85 @@ public class FixedAssetsController : ControllerBase
             quantity = asset.Quantity,
         });
     }
+
+    /// <summary>
+    /// Lists all fixed assets for the Fixed Asset Update screen's
+    /// existing-asset selector. Admin-gated the same way as
+    /// <see cref="Create"/>.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> List()
+    {
+        if (!await this.IsCallerAdminAsync(_db))
+        {
+            return Forbid();
+        }
+
+        var assets = await _db.FixedAssets
+            .Select(a => new { id = a.Id, name = a.Name, price = a.Price, purchaseDate = a.PurchaseDate, assetTypeId = a.AssetTypeId, quantity = a.Quantity })
+            .ToListAsync();
+
+        return Ok(assets);
+    }
+
+    /// <summary>
+    /// Updates a fixed asset for the admin-only fixed-asset-update workflow.
+    /// Matches the asset by its ID. "Asset not found" (404) is its own
+    /// explicit pre-check, since it is a different rule from uniqueness;
+    /// "duplicate name" (409) has no pre-check and is instead caught via
+    /// <see cref="DbUpdateException"/>, the same single-source-of-truth
+    /// pattern <see cref="Create"/> already uses for its own uniqueness
+    /// constraint.
+    /// </summary>
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateFixedAssetRequest request)
+    {
+        if (!await this.IsCallerAdminAsync(_db))
+        {
+            return Forbid();
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            return BadRequest(new { error = "ASSET_NAME_REQUIRED", message = "Demirbaş adı gereklidir." });
+        }
+
+        if (!await _db.AssetTypes.AnyAsync(t => t.Id == request.AssetTypeId))
+        {
+            return BadRequest(new { error = "INVALID_ASSET_TYPE", message = "Geçersiz demirbaş türü." });
+        }
+
+        var asset = await _db.FixedAssets.SingleOrDefaultAsync(a => a.Id == request.Id);
+        if (asset is null)
+        {
+            return NotFound(new { error = "ASSET_NOT_FOUND", message = "Demirbaş bulunamadı." });
+        }
+
+        asset.Name = request.Name.Trim();
+        asset.Price = request.Price;
+        asset.PurchaseDate = request.PurchaseDate;
+        asset.AssetTypeId = request.AssetTypeId;
+        asset.Quantity = request.Quantity;
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { error = "DUPLICATE_ASSET_NAME", message = "Kayıtlı Demirbaş..." });
+        }
+
+        return Ok(new
+        {
+            id = asset.Id,
+            name = asset.Name,
+            price = asset.Price,
+            purchaseDate = asset.PurchaseDate,
+            assetTypeId = asset.AssetTypeId,
+            quantity = asset.Quantity,
+        });
+    }
 }
 
 /// <summary>
@@ -87,6 +166,24 @@ public class FixedAssetsController : ControllerBase
 /// </summary>
 public class CreateFixedAssetRequest
 {
+    public string Name { get; set; } = string.Empty;
+
+    public decimal Price { get; set; }
+
+    public DateTime PurchaseDate { get; set; }
+
+    public int AssetTypeId { get; set; }
+
+    public int Quantity { get; set; }
+}
+
+/// <summary>
+/// Request body for <see cref="FixedAssetsController.Update"/>.
+/// </summary>
+public class UpdateFixedAssetRequest
+{
+    public int Id { get; set; }
+
     public string Name { get; set; } = string.Empty;
 
     public decimal Price { get; set; }
