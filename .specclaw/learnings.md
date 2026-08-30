@@ -170,3 +170,33 @@ The DuplicateRoomNameSimulatingInterceptor built for BL-005's Create-only duplic
 When a shared test double is built for one operation (Create), assume future sibling operations (Update/Delete) on the same entity will need it too, and design it to cover all EntityStates from the start rather than only the one in scope at the time
 
 ---
+
+## [L12] best_practice — Third consecutive backlog item extending existing RoomsCo...
+
+**When:** 2026-08-30 10:02 UTC
+**Category:** best_practice
+**Priority:** low
+**Status:** pending
+
+### Detail
+Third consecutive backlog item extending existing RoomsController/rooms.ts/RequireAdmin rather than creating parallel infrastructure. Smallest item yet (5 tasks, same shape as BL-006) since it reused GET /api/rooms from BL-006 for the selector and needed zero new auth/migration work.
+
+### Action
+Continue favoring extension for same-entity capabilities; the Room CRUD family (Add/Update/Delete) now shares one controller and one screen pattern cleanly
+
+---
+
+## [L13] design_gap — BL-007's acceptance basis (CQ-023) required a cross-modul...
+
+**When:** 2026-08-30 10:02 UTC
+**Category:** design_gap
+**Priority:** medium
+**Status:** pending
+
+### Detail
+BL-007's acceptance basis (CQ-023) required a cross-module dependency (RoomAssetAssignment, owned by MOD-003/BL-011) that the backlog's own 'Depends on:' field never declared, so specclaw-bf-rebuild-collect bypass-check did not surface it automatically. Separately, split-append mechanically refuses to record an item-split for any item whose acceptance basis cites zero DR-### rules (BL-007 cites only CQ-### decisions) -- so the chosen item-split strategy for deferring CQ-023's FK-guard could only be recorded in proposal.md/spec.md prose, not as a formal IS-### with automatic blocked-until tracking.
+
+### Action
+When a bypass-check reports 'ok-built' or an empty dependency list for a screen-bearing item, still read the item's own acceptance-basis prose for cross-module entity references the Depends-on field might have missed -- and expect split-append to refuse a split for any item whose acceptance basis has no DR-### citation, since the tool can only partition against rule ids
+
+---
