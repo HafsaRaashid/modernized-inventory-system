@@ -1,0 +1,78 @@
+/*
+ * SCR-009 (Stock Update, "DEMİRBAŞ GÜNCELLEME"). No project-specific token
+ * group applies to this screen (design-tokens.json has none for SCR-009) —
+ * a plain bordered section, matching the legacy screen's simple form layout
+ * (mirrors RoomUpdate.css / StockAdd.css's precedent for the same shape of
+ * screen).
+ */
+.stock-update {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.stock-update__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 20rem;
+  padding: 1.5rem;
+  border: 1px solid #999;
+}
+
+.stock-update__title {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.stock-update__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stock-update__input,
+.stock-update__select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.stock-update__button {
+  align-self: center;
+  padding: 0.6rem 2rem;
+  border: none;
+  background: #0078d4;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.stock-update__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stock-update__back {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: #0078d4;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.stock-update__message {
+  font-size: 0.85rem;
+}
+
+.stock-update__message--success {
+  color: green;
+}
+
+.stock-update__message--error {
+  color: red;
+}
