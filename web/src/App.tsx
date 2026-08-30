@@ -9,6 +9,7 @@ import { Login } from "./routes/Login";
 import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
 import { RoomAdd } from "./routes/RoomAdd";
+import { RoomDelete } from "./routes/RoomDelete";
 import { RoomUpdate } from "./routes/RoomUpdate";
 
 /**
@@ -108,6 +109,14 @@ export default function App() {
           element={
             <RequireAdmin>
               <RoomUpdate />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/room-delete"
+          element={
+            <RequireAdmin>
+              <RoomDelete />
             </RequireAdmin>
           }
         />

@@ -124,6 +124,38 @@ public class RoomsController : ControllerBase
 
         return Ok(new { id = room.Id, name = room.Name, departmentId = room.DepartmentId });
     }
+
+    /// <summary>
+    /// Deletes a room for the admin-only room-delete workflow. Matches the
+    /// room by its CURRENT name rather than its ID — the same legacy-parity
+    /// decision (CQ-004) <see cref="Update"/> already uses. There is no
+    /// confirmation step here (CQ-017): this is a faithful reproduction of
+    /// the legacy behavior where the caller decides and this endpoint simply
+    /// deletes. Note also that CQ-023's guard against existing room-asset
+    /// assignments is deliberately NOT implemented here — the entity it
+    /// would check (a room-asset-assignment concept) does not exist in this
+    /// schema and belongs to a future, unbuilt backlog item, so its absence
+    /// here is intentional, not an oversight.
+    /// </summary>
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteRoomRequest request)
+    {
+        if (!await this.IsCallerAdminAsync(_db))
+        {
+            return Forbid();
+        }
+
+        var room = await _db.Rooms.SingleOrDefaultAsync(r => r.Name == request.Name);
+        if (room is null)
+        {
+            return NotFound(new { error = "ROOM_NOT_FOUND", message = "Hatalı İşlem..." });
+        }
+
+        _db.Rooms.Remove(room);
+        await _db.SaveChangesAsync();
+
+        return Ok(new { id = room.Id, name = room.Name, departmentId = room.DepartmentId });
+    }
 }
 
 /// <summary>
@@ -144,4 +176,12 @@ public class UpdateRoomRequest
     public string OldName { get; set; } = string.Empty;
 
     public string NewName { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Request body for <see cref="RoomsController.Delete"/>.
+/// </summary>
+public class DeleteRoomRequest
+{
+    public string Name { get; set; } = string.Empty;
 }

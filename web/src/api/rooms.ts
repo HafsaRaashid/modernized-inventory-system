@@ -40,3 +40,16 @@ export function updateRoom(oldName: string, newName: string): Promise<Room> {
     body: { oldName, newName },
   });
 }
+
+/**
+ * Calls DELETE /api/rooms to remove a room, matching it by name. On
+ * success, resolves with the deleted room. On failure (e.g. the room
+ * isn't found), apiFetch rejects with an ApiError — the caller shows the
+ * appropriate failure message.
+ */
+export function deleteRoom(name: string): Promise<Room> {
+  return apiFetch<Room>("/rooms", {
+    method: "DELETE",
+    body: { name },
+  });
+}

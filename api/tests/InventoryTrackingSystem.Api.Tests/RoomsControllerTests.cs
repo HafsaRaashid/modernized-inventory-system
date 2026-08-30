@@ -420,6 +420,97 @@ public class RoomsControllerTests
         Assert.Equal("Hatalı İşlem...", body.Message);
     }
 
+    [Fact]
+    public async Task Delete_ReturnsOk_ForAdminWithMatchingName()
+    {
+        // AC-3
+        await using var factory = CreateFactory(nameof(Delete_ReturnsOk_ForAdminWithMatchingName));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "/api/rooms")
+        {
+            Content = JsonContent.Create(new { name = "Conference Room A" }),
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<RoomResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("Conference Room A", body!.Name);
+    }
+
+    [Fact]
+    public async Task Delete_ReturnsForbidden_ForNonAdminCaller()
+    {
+        // AC-4
+        await using var factory = CreateFactory(nameof(Delete_ReturnsForbidden_ForNonAdminCaller));
+        await SeedKnownUserAsync(factory, yetkiId: false);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "/api/rooms")
+        {
+            Content = JsonContent.Create(new { name = "Conference Room A" }),
+        });
+
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Delete_ReturnsRoomNotFound_ForUnknownName()
+    {
+        // AC-11
+        await using var factory = CreateFactory(nameof(Delete_ReturnsRoomNotFound_ForUnknownName));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "/api/rooms")
+        {
+            Content = JsonContent.Create(new { name = "Nonexistent Room" }),
+        });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("ROOM_NOT_FOUND", body!.Error);
+        Assert.Equal("Hatalı İşlem...", body.Message);
+    }
+
+    [Fact]
+    public async Task Delete_RemovesRoomFromDatabase_ForAdminWithMatchingName()
+    {
+        // AC-12
+        await using var factory = CreateFactory(nameof(Delete_RemovesRoomFromDatabase_ForAdminWithMatchingName));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "/api/rooms")
+        {
+            Content = JsonContent.Create(new { name = "Conference Room A" }),
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        Assert.Equal(0, await db.Rooms.CountAsync());
+    }
+
     private class LoginResponse
     {
         public string Token { get; set; } = string.Empty;

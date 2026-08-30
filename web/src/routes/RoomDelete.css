@@ -1,0 +1,81 @@
+/*
+ * SCR-011 (Room Delete, "ODA SİLME"). No project-specific token group
+ * applies to this screen (design-tokens.json has none for SCR-011) — a
+ * plain bordered section, matching RoomUpdate.css's precedent for the
+ * same shape of screen, but with the selector and delete button sharing
+ * a single row per SCR-011's layout.
+ */
+.room-delete {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.room-delete__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 20rem;
+  padding: 1.5rem;
+  border: 1px solid #999;
+}
+
+.room-delete__title {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.room-delete__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.room-delete__row label {
+  flex-shrink: 0;
+}
+
+.room-delete__select {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.room-delete__button {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  background: #0078d4;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.room-delete__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.room-delete__back {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: #0078d4;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.room-delete__message {
+  font-size: 0.85rem;
+}
+
+.room-delete__message--success {
+  color: green;
+}
+
+.room-delete__message--error {
+  color: red;
+}
