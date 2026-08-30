@@ -1,0 +1,7 @@
+exit=0
+duration_s=6
+log=.specclaw/changes/room-assignment/logs/build-export-path-home-dotnet-path-dotnet-root-1802.log
+head=f5c59c6d0715e113a69fc569adbb3a7e4bff444f
+dirty=true
+cmd=export PATH=$HOME/.dotnet:$PATH DOTNET_ROOT=$HOME/.dotnet; (cd api && dotnet build) && (cd web && npm run build)
+interrupted=false

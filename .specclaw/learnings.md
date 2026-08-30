@@ -200,3 +200,18 @@ BL-007's acceptance basis (CQ-023) required a cross-module dependency (RoomAsset
 When a bypass-check reports 'ok-built' or an empty dependency list for a screen-bearing item, still read the item's own acceptance-basis prose for cross-module entity references the Depends-on field might have missed -- and expect split-append to refuse a split for any item whose acceptance basis has no DR-### citation, since the tool can only partition against rule ids
 
 ---
+
+## [L14] design_gap — RoomAssignmentsController used the default [Route("api/[c...
+
+**When:** 2026-08-30 10:46 UTC
+**Category:** design_gap
+**Priority:** high
+**Status:** pending
+
+### Detail
+RoomAssignmentsController used the default [Route("api/[controller]")] convention, which resolves to the literal PascalCase class name minus 'Controller' with NO kebab-casing -- /api/RoomAssignments, not /api/room-assignments. Every prior controller (Rooms, Departments, Personnel) has a single-word name, so ASP.NET Core's case-insensitive route matching silently papered over the mismatch; this is the first COMPOUND-word controller name, where the missing hyphen is a structural difference case-insensitivity cannot bridge. The frontend's roomAssignments.ts already called /room-assignments (matching spec/design/tasks), so the mismatch would have 404'd in real use. Caught by the T6 test-writing agent when its tests failed against the hyphenated path; fixed by adding an explicit [Route("api/room-assignments")] attribute.
+
+### Action
+For any FUTURE controller whose name is a compound/multi-word noun (not just Rooms/Departments/Personnel-style single words), explicitly verify or override the route with [Route("api/kebab-case-name")] rather than trusting the [controller] token -- don't rely on case-insensitive matching to save a compound name
+
+---
