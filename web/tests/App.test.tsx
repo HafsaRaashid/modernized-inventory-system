@@ -5,6 +5,8 @@ import App from "../src/App";
 import { getSession } from "../src/api/auth";
 import { listDepartments } from "../src/api/departments";
 import { listRooms, deleteRoom } from "../src/api/rooms";
+import { listPersonnel } from "../src/api/personnel";
+import { createRoomAssignment } from "../src/api/roomAssignments";
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USERNAME_STORAGE_KEY,
@@ -25,6 +27,14 @@ vi.mock("../src/api/rooms", () => ({
   deleteRoom: vi.fn(),
 }));
 
+vi.mock("../src/api/personnel", () => ({
+  listPersonnel: vi.fn(),
+}));
+
+vi.mock("../src/api/roomAssignments", () => ({
+  createRoomAssignment: vi.fn(),
+}));
+
 /**
  * Proves the frontend test runner (test-frontend pillar) executes end to
  * end against this foundation, and that the "/" route's auth gate (BL-001
@@ -42,6 +52,9 @@ describe("App shell", () => {
     vi.mocked(listRooms).mockReset();
     vi.mocked(listRooms).mockResolvedValue([]);
     vi.mocked(deleteRoom).mockReset();
+    vi.mocked(listPersonnel).mockReset();
+    vi.mocked(listPersonnel).mockResolvedValue([]);
+    vi.mocked(createRoomAssignment).mockReset();
   });
 
   afterEach(() => {
@@ -330,6 +343,39 @@ describe("App shell", () => {
 
     expect(
       await screen.findByRole("button", { name: "SİL" }),
+    ).toBeInTheDocument();
+  });
+
+  it("AC-8: an unauthenticated visit to /room-assignment shows the Login screen", () => {
+    window.history.pushState({}, "", "/room-assignment");
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(document.getElementById("login-form")).toBeInTheDocument();
+  });
+
+  it("AC-9: an authenticated non-admin visiting /room-assignment sees the Room Assignment screen", async () => {
+    window.history.pushState({}, "", "/room-assignment");
+    sessionStorage.setItem(AUTH_TOKEN_STORAGE_KEY, "test-token");
+    sessionStorage.setItem(AUTH_USERNAME_STORAGE_KEY, "testuser");
+    vi.mocked(getSession).mockResolvedValueOnce({ username: "testuser", isAdmin: false });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>,
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "KAYDET" }),
     ).toBeInTheDocument();
   });
 });
