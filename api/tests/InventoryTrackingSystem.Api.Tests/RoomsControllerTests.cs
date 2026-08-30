@@ -14,16 +14,20 @@ using Xunit;
 namespace InventoryTrackingSystem.Api.Tests;
 
 /// <summary>
-/// Integration tests for <c>POST /api/rooms</c> (<see cref="Controllers.RoomsController"/>)
-/// via <see cref="WebApplicationFactory{TEntryPoint}"/>, covering spec.md
-/// AC-3 (admin + valid name/department -> 201 Created with the room echoed
-/// back), AC-4 (empty/whitespace name -> 400 ROOM_NAME_REQUIRED and no row
-/// created), AC-5 (duplicate room name -> 409 DUPLICATE_ROOM_NAME), AC-9
-/// (non-admin caller -> 403 Forbidden), and AC-13 (unknown departmentId ->
-/// 400 INVALID_DEPARTMENT). Each test builds its own factory with the real
-/// <see cref="AppDbContext"/> SQL Server registration swapped for a
-/// uniquely-named EF Core InMemory database, so no real SQL Server is
-/// needed and tests never share state.
+/// Integration tests for <c>POST</c>/<c>GET</c>/<c>PUT /api/rooms</c>
+/// (<see cref="Controllers.RoomsController"/>) via
+/// <see cref="WebApplicationFactory{TEntryPoint}"/>, covering spec.md AC-3
+/// (admin + valid name/department -> 201 Created with the room echoed back;
+/// admin + valid rename -> 200 OK with the renamed room), AC-4
+/// (empty/whitespace name -> 400 ROOM_NAME_REQUIRED and no row
+/// created/renamed), AC-5 (duplicate room name on create or rename -> 409
+/// DUPLICATE_ROOM_NAME), AC-9/AC-10 (non-admin caller -> 403 Forbidden for
+/// both list and rename), AC-13 (unknown departmentId on create -> 400
+/// INVALID_DEPARTMENT; unknown oldName on rename -> 404 ROOM_NOT_FOUND), and
+/// a happy-path <c>GET /api/rooms</c> listing. Each test builds its own
+/// factory with the real <see cref="AppDbContext"/> SQL Server registration
+/// swapped for a uniquely-named EF Core InMemory database, so no real SQL
+/// Server is needed and tests never share state.
 /// </summary>
 public class RoomsControllerTests
 {
@@ -86,6 +90,18 @@ public class RoomsControllerTests
         await db.SaveChangesAsync();
 
         return department.Id;
+    }
+
+    private static async Task<int> SeedRoomAsync(WebApplicationFactory<Program> factory, string name, int departmentId)
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var room = new Room { Name = name, DepartmentId = departmentId };
+        db.Rooms.Add(room);
+        await db.SaveChangesAsync();
+
+        return room.Id;
     }
 
     private static async Task<string> LoginAsync(HttpClient client)
@@ -232,6 +248,178 @@ public class RoomsControllerTests
         Assert.Equal("Geçersiz departman.", body.Message);
     }
 
+    [Fact]
+    public async Task List_ReturnsRooms_ForAdmin()
+    {
+        await using var factory = CreateFactory(nameof(List_ReturnsRooms_ForAdmin));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        var roomId = await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.GetAsync("/api/rooms");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<List<RoomListItem>>();
+        Assert.NotNull(body);
+        var room = Assert.Single(body!);
+        Assert.Equal(roomId, room.Id);
+        Assert.Equal("Conference Room A", room.Name);
+    }
+
+    [Fact]
+    public async Task List_ReturnsForbidden_ForNonAdminCaller()
+    {
+        // AC-10
+        // Prefixed (rather than the bare method name) because
+        // DepartmentsControllerTests declares a test with this exact same
+        // name — and EF Core's InMemory provider shares one underlying store
+        // across DbContexts configured with the same database name, even
+        // across unrelated WebApplicationFactory instances in the same test
+        // process, so an unqualified name here would collide with that
+        // other test's seeded "known.user" row and intermittently fail
+        // Login's SingleOrDefaultAsync with "Sequence contains more than
+        // one element".
+        await using var factory = CreateFactory($"Rooms_{nameof(List_ReturnsForbidden_ForNonAdminCaller)}");
+        await SeedKnownUserAsync(factory, yetkiId: false);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.GetAsync("/api/rooms");
+
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Update_ReturnsOk_ForAdminWithValidRename()
+    {
+        // AC-3
+        await using var factory = CreateFactory(nameof(Update_ReturnsOk_ForAdminWithValidRename));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.PutAsJsonAsync("/api/rooms", new
+        {
+            oldName = "Conference Room A",
+            newName = "Meeting Room B",
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<RoomResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("Meeting Room B", body!.Name);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task Update_ReturnsRoomNameRequired_ForEmptyOrWhitespaceNewName(string newName)
+    {
+        // AC-4
+        await using var factory = CreateFactory(
+            $"{nameof(Update_ReturnsRoomNameRequired_ForEmptyOrWhitespaceNewName)}-{newName.Length}");
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.PutAsJsonAsync("/api/rooms", new
+        {
+            oldName = "Conference Room A",
+            newName,
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("ROOM_NAME_REQUIRED", body!.Error);
+        Assert.Equal("Oda adı gereklidir.", body.Message);
+    }
+
+    [Fact]
+    public async Task Update_ReturnsDuplicateRoomName_ForRenameCollidingWithAnotherRoom()
+    {
+        // AC-5
+        await using var factory = CreateFactory(nameof(Update_ReturnsDuplicateRoomName_ForRenameCollidingWithAnotherRoom));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Room A", departmentId);
+        await SeedRoomAsync(factory, "Room B", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.PutAsJsonAsync("/api/rooms", new
+        {
+            oldName = "Room A",
+            newName = "Room B",
+        });
+
+        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("DUPLICATE_ROOM_NAME", body!.Error);
+        Assert.Equal("Hatalı İşlem...", body.Message);
+    }
+
+    [Fact]
+    public async Task Update_ReturnsForbidden_ForNonAdminCaller()
+    {
+        // AC-9
+        await using var factory = CreateFactory(nameof(Update_ReturnsForbidden_ForNonAdminCaller));
+        await SeedKnownUserAsync(factory, yetkiId: false);
+        var departmentId = await SeedDepartmentAsync(factory);
+        await SeedRoomAsync(factory, "Conference Room A", departmentId);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.PutAsJsonAsync("/api/rooms", new
+        {
+            oldName = "Conference Room A",
+            newName = "Meeting Room B",
+        });
+
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Update_ReturnsRoomNotFound_ForUnknownOldName()
+    {
+        // AC-13
+        await using var factory = CreateFactory(nameof(Update_ReturnsRoomNotFound_ForUnknownOldName));
+        await SeedKnownUserAsync(factory, yetkiId: true);
+        var client = factory.CreateClient();
+        var token = await LoginAsync(client);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.PutAsJsonAsync("/api/rooms", new
+        {
+            oldName = "Nonexistent Room",
+            newName = "Meeting Room B",
+        });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("ROOM_NOT_FOUND", body!.Error);
+        Assert.Equal("Hatalı İşlem...", body.Message);
+    }
+
     private class LoginResponse
     {
         public string Token { get; set; } = string.Empty;
@@ -255,14 +443,26 @@ public class RoomsControllerTests
         public int DepartmentId { get; set; }
     }
 
+    private class RoomListItem
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+    }
+
     /// <summary>
     /// Stands in for the real SQL Server unique index on <see cref="Room.Name"/>
     /// (see <see cref="AppDbContext"/>), which the EF Core InMemory provider
     /// does not enforce: throws the same <see cref="DbUpdateException"/> a
     /// unique-index violation would produce in production, so
-    /// <see cref="Controllers.RoomsController.Create"/>'s
-    /// <c>catch (DbUpdateException)</c> path is exercised for real by AC-5's
-    /// duplicate-name test.
+    /// <see cref="Controllers.RoomsController.Create"/>'s and
+    /// <see cref="Controllers.RoomsController.Update"/>'s
+    /// <c>catch (DbUpdateException)</c> paths are exercised for real by
+    /// AC-5's duplicate-name tests. Covers both a newly <c>Added</c> room
+    /// (Create) and an existing room's <c>Modified</c> <see cref="Room.Name"/>
+    /// (Update's rename), excluding the candidate's own row (by
+    /// <see cref="Room.Id"/>) from the duplicate check so a no-op rename
+    /// isn't mistaken for a collision.
     /// </summary>
     private sealed class DuplicateRoomNameSimulatingInterceptor : SaveChangesInterceptor
     {
@@ -274,18 +474,19 @@ public class RoomsControllerTests
             var context = eventData.Context;
             if (context is not null)
             {
-                var addedNames = context.ChangeTracker.Entries<Room>()
-                    .Where(e => e.State == EntityState.Added)
-                    .Select(e => e.Entity.Name)
+                var candidates = context.ChangeTracker.Entries<Room>()
+                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                    .Select(e => new { e.Entity.Id, e.Entity.Name })
                     .ToList();
 
-                foreach (var name in addedNames)
+                foreach (var candidate in candidates)
                 {
                     var duplicateExists = await context.Set<Room>()
-                        .AnyAsync(r => r.Name == name, cancellationToken);
+                        .AnyAsync(r => r.Name == candidate.Name && r.Id != candidate.Id, cancellationToken);
                     if (duplicateExists)
                     {
-                        throw new DbUpdateException($"Simulated unique-index violation for Room.Name '{name}'.");
+                        throw new DbUpdateException(
+                            $"Simulated unique-index violation for Room.Name '{candidate.Name}'.");
                     }
                 }
             }

@@ -61,6 +61,69 @@ public class RoomsController : ControllerBase
 
         return Created(string.Empty, new { id = room.Id, name = room.Name, departmentId = room.DepartmentId });
     }
+
+    /// <summary>
+    /// Lists all rooms for the Room Update screen's existing-room selector
+    /// (FR-2). Admin-gated the same way as <see cref="Create"/>.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> List()
+    {
+        if (!await this.IsCallerAdminAsync(_db))
+        {
+            return Forbid();
+        }
+
+        var rooms = await _db.Rooms
+            .Select(r => new { id = r.Id, name = r.Name })
+            .ToListAsync();
+
+        return Ok(rooms);
+    }
+
+    /// <summary>
+    /// Renames a room for the admin-only room-update workflow. Matches the
+    /// room by its CURRENT name rather than its ID — a deliberate
+    /// legacy-parity decision (CQ-004), not an oversight, and safe only
+    /// because <see cref="Room.Name"/> is uniquely constrained. "Room not
+    /// found" (404) is its own explicit pre-check, since it is a different
+    /// rule from uniqueness; "duplicate name" (409) has no pre-check and is
+    /// instead caught via <see cref="DbUpdateException"/>, the same
+    /// single-source-of-truth pattern <see cref="Create"/> already uses for
+    /// its own uniqueness constraint.
+    /// </summary>
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateRoomRequest request)
+    {
+        if (!await this.IsCallerAdminAsync(_db))
+        {
+            return Forbid();
+        }
+
+        if (string.IsNullOrWhiteSpace(request.NewName))
+        {
+            return BadRequest(new { error = "ROOM_NAME_REQUIRED", message = "Oda adı gereklidir." });
+        }
+
+        var room = await _db.Rooms.SingleOrDefaultAsync(r => r.Name == request.OldName);
+        if (room is null)
+        {
+            return NotFound(new { error = "ROOM_NOT_FOUND", message = "Hatalı İşlem..." });
+        }
+
+        room.Name = request.NewName.Trim();
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { error = "DUPLICATE_ROOM_NAME", message = "Hatalı İşlem..." });
+        }
+
+        return Ok(new { id = room.Id, name = room.Name, departmentId = room.DepartmentId });
+    }
 }
 
 /// <summary>
@@ -71,4 +134,14 @@ public class CreateRoomRequest
     public string Name { get; set; } = string.Empty;
 
     public int DepartmentId { get; set; }
+}
+
+/// <summary>
+/// Request body for <see cref="RoomsController.Update"/>.
+/// </summary>
+public class UpdateRoomRequest
+{
+    public string OldName { get; set; } = string.Empty;
+
+    public string NewName { get; set; } = string.Empty;
 }

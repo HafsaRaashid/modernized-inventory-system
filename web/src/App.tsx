@@ -9,6 +9,7 @@ import { Login } from "./routes/Login";
 import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
 import { RoomAdd } from "./routes/RoomAdd";
+import { RoomUpdate } from "./routes/RoomUpdate";
 
 /**
  * Renders the Main Menu (inside AppShell) when authenticated, otherwise
@@ -99,6 +100,14 @@ export default function App() {
           element={
             <RequireAdmin>
               <RoomAdd />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/room-update"
+          element={
+            <RequireAdmin>
+              <RoomUpdate />
             </RequireAdmin>
           }
         />
