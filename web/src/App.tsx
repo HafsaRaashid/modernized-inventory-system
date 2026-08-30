@@ -5,6 +5,7 @@ import { useAuth } from "./auth/AuthContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { AdminPanel } from "./routes/AdminPanel";
 import { AppShell } from "./routes/AppShell";
+import { AssetAssignment } from "./routes/AssetAssignment";
 import { Login } from "./routes/Login";
 import { MainMenu } from "./routes/MainMenu";
 import { NotFound } from "./routes/NotFound";
@@ -102,6 +103,14 @@ export default function App() {
           element={
             <RequireAuth>
               <RoomAssignment />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/asset-assignment"
+          element={
+            <RequireAuth>
+              <AssetAssignment />
             </RequireAuth>
           }
         />
